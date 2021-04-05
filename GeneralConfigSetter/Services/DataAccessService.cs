@@ -21,11 +21,14 @@ namespace GeneralConfigSetter.Services
         public static string GetPatConfigFilePath()
         {
             string runningPath = AppDomain.CurrentDomain.BaseDirectory;
-            string filePath = string.Format("{0}Resources\\PatConfig.txt", Path.GetFullPath(Path.Combine(runningPath, @"..\..\")));
+            string filePath = $"{runningPath}Resources\\PatConfig.txt";
+
+            CheckPatConfigFileAndFolder(filePath);
+
             return filePath;
         }
 
-        public static void InitializePatConfigFileFolder(string filePath)
+        public static void CheckPatConfigFileAndFolder(string filePath)
         {
             bool folderExists = Directory.Exists(Path.GetDirectoryName(filePath));
 
@@ -36,7 +39,7 @@ namespace GeneralConfigSetter.Services
 
             if (!fileExists)
             {
-                File.Create(filePath);
+                File.Create(filePath).Dispose();
             }
         }
 

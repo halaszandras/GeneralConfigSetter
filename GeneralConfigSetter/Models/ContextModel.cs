@@ -23,7 +23,6 @@ namespace GeneralConfigSetter.Models
         public void Initialize()
         {
             var patConfigFilePath = GetPatConfigFilePath();
-            InitializePatConfigFileFolder(patConfigFilePath);
             var patConfigContent = AccessPatConfigContent(patConfigFilePath);
             ServerPats = PatService.GetPats(patConfigContent);
         }
