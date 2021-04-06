@@ -18,7 +18,7 @@ namespace GeneralConfigSetter.Views.Windows
         {
             InitializeComponent();
 
-            _mainGrid.DataContext = mainWindowViewModel;
+            _mainWindow.DataContext = mainWindowViewModel;
             mainWindowViewModel.NavigationService.SetFrame(_mainFrame);
 
             //mainWindowViewModel.NavigationService.NavigateTo(viewContainer.ConfigUpdateView);
