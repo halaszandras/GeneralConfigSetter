@@ -50,8 +50,29 @@ namespace GeneralConfigSetter.Services
                 File.Delete(filePath);
             }
 
-            using StreamWriter streamWriter = new(filePath);
-            streamWriter.Write(newContent);
+            try
+            {
+                using StreamWriter streamWriter = new(filePath);
+                streamWriter.Write(newContent);
+            }
+            catch (DirectoryNotFoundException dirNotFoundException)
+            {
+                Directory.CreateDirectory(Path.GetDirectoryName(filePath));
+            }
+            catch (UnauthorizedAccessException unauthorizedAccessException)
+            {
+                // Show a message to the user
+            }
+            catch (IOException ioException)
+            {
+                //logger.Error(ioException, "Error during file write");
+                // Show a message to the user
+            }
+            catch (Exception exception)
+            {
+                //logger.Fatal(exception, "We need to handle this better");
+                // Show general message to the user
+            }
         }
     }
 }
