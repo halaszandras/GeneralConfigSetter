@@ -1,5 +1,8 @@
-﻿using GeneralConfigSetter.Models;
+﻿using GeneralConfigSetter.Enums;
+using GeneralConfigSetter.Models;
 using GeneralConfigSetter.Services;
+using System;
+using System.IO;
 using WpfFramework.Core;
 
 namespace GeneralConfigSetter.ViewModels
@@ -35,6 +38,7 @@ namespace GeneralConfigSetter.ViewModels
         }
 
         public RelayCommand UpdatePatConfigCommand { get; set; }
+        public RelayCommandGeneric<NotificationModel, bool> ShowMessageCommand { get; internal set; }
 
         public PatConfigViewModel(IContext context)
         {
@@ -49,10 +53,22 @@ namespace GeneralConfigSetter.ViewModels
 
         private void UpdatePatConfig()
         {
-            DataAccessService.UpdatePatConfig(_patConfigFilePath, PatConfig);
-            Context.Initialize();
-            _configState = PatConfig;
-            _isUpdatePatConfigEnabled = false;
+            try
+            {
+                DataAccessService.UpdatePatConfig(_patConfigFilePath, PatConfig);
+                Context.Initialize();
+                _configState = PatConfig;
+                _isUpdatePatConfigEnabled = false;
+                ShowMessageCommand.Execute(new NotificationModel("SUCCESS!!!!", NotificationType.Information));
+            }
+            catch (UnauthorizedAccessException unautharitedAccess)
+            {
+                ShowMessageCommand.Execute(new NotificationModel(unautharitedAccess.Message, NotificationType.Error));
+            }
+            catch (IOException IOException)
+            {
+                ShowMessageCommand.Execute(new NotificationModel(IOException.Message, NotificationType.Error));
+            }
         }
 
         private bool IsUpdatePatConfigEnabled()

@@ -1,4 +1,5 @@
-﻿using GeneralConfigSetter.Models;
+﻿using GeneralConfigSetter.Enums;
+using GeneralConfigSetter.Models;
 using Microsoft.Win32;
 using WpfFramework.Core;
 
@@ -95,6 +96,7 @@ namespace GeneralConfigSetter.ViewModels
 
         public RelayCommand ExtractLinkDataCommand { get; set; }
         public RelayCommand UpdateGeneralConfigCommand { get; set; }
+        public RelayCommandGeneric<NotificationModel, bool> ShowMessageCommand { get; internal set; }
 
         public ConfigUpdateViewModel(IContext context)
         {
@@ -122,6 +124,7 @@ namespace GeneralConfigSetter.ViewModels
         private void UpdateGeneralConfig()
         {
             OpenFileDialog openFileDialog = new();
+            openFileDialog.Filter = "JSON files (*.json)|*.json";
             var result = openFileDialog.ShowDialog();
 
             if (result != null && result == true)
@@ -130,6 +133,11 @@ namespace GeneralConfigSetter.ViewModels
                 string filePath = openFileDialog.FileName;
 
                 Services.GeneralConfigService.Update(Context, filePath);
+                ShowMessageCommand.Execute(new NotificationModel("SUCCESS!!!!", NotificationType.Information));
+            }
+            else
+            {
+                ShowMessageCommand.Execute(new NotificationModel("But why? :(", NotificationType.Error));
             }
         }
 

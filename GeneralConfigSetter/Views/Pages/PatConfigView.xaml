@@ -17,36 +17,34 @@
       d:DesignWidth="800"
       Title="PatConfigView">
 
-    <materialDesign:Card UniformCornerRadius="6">
-        <Grid Name="_patConfigGrid"
-              Margin="18">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="auto" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="auto" />
-            </Grid.RowDefinitions>
+    <Grid Name="_patConfigGrid"
+          Margin="18">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
 
-            <materialDesign:ColorZone Grid.Row="0"                                   
-                                      Mode="PrimaryMid">
-                <TextBlock Margin="6"
-                           Style="{StaticResource MaterialDesignHeadline4TextBlock}"
-                           Text="Pat Config"
-                           HorizontalAlignment="Center" />
-            </materialDesign:ColorZone>
-            
-            <TextBox Grid.Row="1"
-                     Text="{Binding PatConfig, UpdateSourceTrigger=PropertyChanged}"
-                     Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                     VerticalAlignment="Stretch"
-                     AcceptsReturn="True"
-                     TextWrapping="Wrap"
-                     VerticalScrollBarVisibility="Auto" />
+        <materialDesign:ColorZone Grid.Row="0"
+                                  Mode="PrimaryMid">
+            <TextBlock Margin="6"
+                       Style="{StaticResource MaterialDesignHeadline4TextBlock}"
+                       Text="Pat Config"
+                       HorizontalAlignment="Center" />
+        </materialDesign:ColorZone>
 
-            <Button Grid.Row="2"
-                    HorizontalAlignment="Center"
-                    Margin="16"
-                    Content="Update PAT Config"
-                    Command="{Binding UpdatePatConfigCommand}" />
-        </Grid>
-    </materialDesign:Card>
+        <TextBox Grid.Row="1"
+                 Text="{Binding PatConfig, UpdateSourceTrigger=PropertyChanged}"
+                 Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                 VerticalAlignment="Stretch"
+                 AcceptsReturn="True"
+                 TextWrapping="Wrap"
+                 VerticalScrollBarVisibility="Auto" />
+
+        <Button Grid.Row="2"
+                HorizontalAlignment="Center"
+                Margin="16"
+                Content="Update PAT Config"
+                Command="{Binding UpdatePatConfigCommand}" />
+    </Grid>
 </Page>

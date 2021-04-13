@@ -42,7 +42,13 @@ namespace GeneralConfigSetter.Services
                 File.Create(filePath).Dispose();
             }
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="filePath"></param>
+        /// <param name="newContent"></param>
+        /// <exception cref="UnauthorizedAccessException"/>
+        /// <exception cref="IOException"/>
         public static void UpdatePatConfig(string filePath, string newContent)
         {
             if (File.Exists(filePath))
@@ -55,23 +61,9 @@ namespace GeneralConfigSetter.Services
                 using StreamWriter streamWriter = new(filePath);
                 streamWriter.Write(newContent);
             }
-            catch (DirectoryNotFoundException dirNotFoundException)
+            catch (DirectoryNotFoundException)
             {
                 Directory.CreateDirectory(Path.GetDirectoryName(filePath));
-            }
-            catch (UnauthorizedAccessException unauthorizedAccessException)
-            {
-                // Show a message to the user
-            }
-            catch (IOException ioException)
-            {
-                //logger.Error(ioException, "Error during file write");
-                // Show a message to the user
-            }
-            catch (Exception exception)
-            {
-                //logger.Fatal(exception, "We need to handle this better");
-                // Show general message to the user
             }
         }
     }

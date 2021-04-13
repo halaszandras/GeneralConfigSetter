@@ -29,5 +29,12 @@ namespace GeneralConfigSetter.Services
             }
             return result;
         }
+
+        public static int PatComparedToToday(string filePath)
+        {
+            DateTime lastModification = File.GetLastWriteTime(filePath).AddDays(10);
+            int compareValue = DateTime.Now.CompareTo(lastModification);
+            return compareValue;
+        }
     }
 }

@@ -40,16 +40,24 @@
 
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="30" />
         </Grid.RowDefinitions>
 
+        <materialDesign:ColorZone Background="{Binding NotificationViewModel.MessageColor}"
+                                  Opacity="{Binding NotificationViewModel.MessageOpacity}">
+            <TextBlock HorizontalAlignment="Center"
+                       Margin="6"
+                       Text="{Binding NotificationViewModel.LastMessage}"/>
+        </materialDesign:ColorZone>
+
         <Frame Name="_mainFrame"
-               Grid.Row="0"
+               Grid.Row="1"
                Content="{Binding NavigationService.CurrentContent}"
                NavigationUIVisibility="Hidden" />
 
-        <Grid Grid.Row="1">
+        <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />

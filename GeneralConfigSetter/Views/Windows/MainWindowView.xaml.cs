@@ -1,8 +1,7 @@
-﻿using GeneralConfigSetter.ViewModels;
+﻿using Autofac.Features.AttributeFilters;
+using GeneralConfigSetter.ViewModels;
 using GeneralConfigSetter.Views.Pages;
-using GeneralConfigSetter.Views.Utility;
 using MahApps.Metro.Controls;
-using System.Windows;
 
 namespace GeneralConfigSetter.Views.Windows
 {
@@ -11,27 +10,14 @@ namespace GeneralConfigSetter.Views.Windows
     /// </summary>
     public partial class MainWindowView : MetroWindow
     {
-        private readonly MainWindowViewModel mainWindowViewModel;
-        private readonly ViewContainer viewContainer;
-
-        public MainWindowView(MainWindowViewModel mainWindowViewModel, ViewContainer viewContainer)
+        public MainWindowView(MainWindowViewModel mainWindowViewModel, [KeyFilter("ConfigUpdateView")]ConfigUpdateView configUpdateView)
         {
             InitializeComponent();
 
             _mainWindow.DataContext = mainWindowViewModel;
             mainWindowViewModel.NavigationService.SetFrame(_mainFrame);
 
-            //mainWindowViewModel.NavigationService.NavigateTo(viewContainer.ConfigUpdateView);
-            //mainWindowViewModel.NavigationService.ActivePageChanged += NavigationService_ActivePageChanged;
-            mainWindowViewModel.LoadMainPage();
-
-            this.mainWindowViewModel = mainWindowViewModel;
-            this.viewContainer = viewContainer;
+            mainWindowViewModel.NavigationService.NavigateTo(configUpdateView);
         }
-
-        //private void NavigationService_ActivePageChanged()
-        //{
-        //    mainWindowViewModel.LoadConfigUpdateViewCommand.RaiseCanExecuteChanged();
-        //}
     }
 }
