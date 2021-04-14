@@ -36,7 +36,7 @@
                     <TextBox  Margin="18 8"
                               materialDesign:HintAssist.Hint="Query tag"
                               Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                              Text="{Binding ProjectName, UpdateSourceTrigger=PropertyChanged}"
+                              Text="{Binding QueryTag, UpdateSourceTrigger=PropertyChanged}"
                               VerticalAlignment="Center"
                               TextWrapping="Wrap" />
                     <TextBox  Margin="18 8"
