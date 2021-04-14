@@ -16,10 +16,10 @@
                       mc:Ignorable="d"
                       Title="General Config Updater"
                       Icon="pack://application:,,,/Resources/ninjaCat.png"
-                      Height="710"
-                      Width="500"
-                      MinHeight="710"
-                      MinWidth="500"
+                      Height="725"
+                      Width="550"
+                      MinHeight="725"
+                      MinWidth="550"
                       WindowStartupLocation="CenterScreen"
                       BorderThickness="0"
                       GlowBrush="Black"
@@ -41,33 +41,40 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
-            <RowDefinition Height="30" />
         </Grid.RowDefinitions>
 
-        <materialDesign:ColorZone Background="{Binding NotificationViewModel.MessageColor}"
+        <Menu Grid.Column="0"
+              IsMainMenu="True">
+            <MenuItem Header="_General Config"
+                      Command="{Binding LoadConfigUpdateViewCommand}" />
+            <MenuItem Header="_Deleter Config"
+                      Command="{Binding LoadDeleterConfigViewCommand}" />
+            <MenuItem Header="_Attachment Config"
+                      Command="{Binding LoadAttachmentConfigViewCommand}" />
+
+            <MenuItem Header="_Settings"
+                      Icon="{materialDesign:PackIcon Kind=Cog}">
+                <MenuItem Header="_PAT Config"
+                          Icon="{materialDesign:PackIcon Kind=Paw}"
+                          Command="{Binding LoadPatConfigViewCommand}" />
+                <MenuItem Header="_Repository Config"
+                          Command="{Binding LoadRepositoryConfigViewCommand}" />
+            </MenuItem>
+        </Menu>
+        
+        <materialDesign:ColorZone Grid.Row="1"
+                                  Background="{Binding NotificationViewModel.MessageColor}"
                                   Opacity="{Binding NotificationViewModel.MessageOpacity}">
             <TextBlock HorizontalAlignment="Center"
                        Margin="6"
-                       Text="{Binding NotificationViewModel.LastMessage}"/>
+                       Text="{Binding NotificationViewModel.LastMessage}" />
         </materialDesign:ColorZone>
 
         <Frame Name="_mainFrame"
-               Grid.Row="1"
+               Grid.Row="2"
                Content="{Binding NavigationService.CurrentContent}"
                NavigationUIVisibility="Hidden" />
-
-        <Grid Grid.Row="2">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-            <Button Content="GeneralConfigGenerator"
-                    Command="{Binding LoadConfigUpdateViewCommand}"
-                    Grid.Column="0" />
-            <Button Content="PAT Config"
-                    Command="{Binding LoadPatConfigViewCommand}"
-                    Grid.Column="1" />
-        </Grid>
     </Grid>
 </Controls:MetroWindow>

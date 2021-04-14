@@ -29,7 +29,7 @@
                     <materialDesign:ColorZone Mode="PrimaryMid">
                         <TextBlock HorizontalAlignment="Center"
                                    Margin="6"
-                                   Text="Config Updater"
+                                   Text="General Config Updater"
                                    Style="{StaticResource MaterialDesignHeadline4TextBlock}"/>
                     </materialDesign:ColorZone>
                     

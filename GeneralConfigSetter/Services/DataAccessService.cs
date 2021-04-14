@@ -5,17 +5,17 @@ namespace GeneralConfigSetter.Services
 {
     public static class DataAccessService
     {
-        public static string[] AccessPatConfigContent(string filePath)
+        public static string[] AccessConfigContent(string filePath)
         {
             string[] fileContent = File.ReadAllLines(filePath);
 
             return fileContent;
         }
 
-        public static string GetPatConfigRawContent(string filePath)
+        public static string GetConfigFileContent(string filePath)
         {
-            string rawContent = File.ReadAllText(filePath);
-            return rawContent;
+            string fileContent = File.ReadAllText(filePath);
+            return fileContent;
         }
 
         public static string GetPatConfigFilePath()
@@ -23,12 +23,22 @@ namespace GeneralConfigSetter.Services
             string runningPath = AppDomain.CurrentDomain.BaseDirectory;
             string filePath = $"{runningPath}Resources\\PatConfig.txt";
 
-            CheckPatConfigFileAndFolder(filePath);
+            CheckConfigFileAndFolder(filePath);
 
             return filePath;
         }
 
-        public static void CheckPatConfigFileAndFolder(string filePath)
+        public static string GetRepositoryConfigFilePath()
+        {
+            string runningPath = AppDomain.CurrentDomain.BaseDirectory;
+            string filePath = $"{runningPath}Resources\\RepositoryConfig.txt";
+
+            CheckConfigFileAndFolder(filePath);
+
+            return filePath;
+        }
+
+        public static void CheckConfigFileAndFolder(string filePath)
         {
             bool folderExists = Directory.Exists(Path.GetDirectoryName(filePath));
 
@@ -42,6 +52,7 @@ namespace GeneralConfigSetter.Services
                 File.Create(filePath).Dispose();
             }
         }
+
         /// <summary>
         /// 
         /// </summary>
@@ -49,7 +60,7 @@ namespace GeneralConfigSetter.Services
         /// <param name="newContent"></param>
         /// <exception cref="UnauthorizedAccessException"/>
         /// <exception cref="IOException"/>
-        public static void UpdatePatConfig(string filePath, string newContent)
+        public static void UpdateConfigFile(string filePath, string newContent)
         {
             if (File.Exists(filePath))
             {

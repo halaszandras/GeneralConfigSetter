@@ -10,16 +10,16 @@ namespace GeneralConfigSetter.Views.Pages
     /// </summary>
     public partial class ConfigUpdateView : Page
     {
-        private readonly ConfigUpdateViewModel configUpdateViewModel;
+        private readonly ConfigUpdateViewModel _configUpdateViewModel;
 
         public ConfigUpdateView(ConfigUpdateViewModel configUpdateViewModel)
         {
             InitializeComponent();
 
             _configUpdateGrid.DataContext = configUpdateViewModel;
-            this.configUpdateViewModel = configUpdateViewModel;
+            _configUpdateViewModel = configUpdateViewModel;
         }
 
-        public RelayCommandGeneric<NotificationModel, bool> ShowMessageCommand { get { return configUpdateViewModel.ShowMessageCommand; } internal set { configUpdateViewModel.ShowMessageCommand = value; } }
+        public RelayCommandGeneric<NotificationModel, bool> ShowMessageCommand { get { return _configUpdateViewModel.ShowMessageCommand; } internal set { _configUpdateViewModel.ShowMessageCommand = value; } }
     }
 }

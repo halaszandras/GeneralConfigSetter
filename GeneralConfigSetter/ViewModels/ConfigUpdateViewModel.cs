@@ -132,7 +132,7 @@ namespace GeneralConfigSetter.ViewModels
                 //Get the path of specified file
                 string filePath = openFileDialog.FileName;
 
-                Services.GeneralConfigService.Update(Context, filePath);
+                Services.ConfigUpdateService.UpdateGeneralConfig(Context, filePath);
                 ShowMessageCommand.Execute(new NotificationModel("SUCCESS!!!!", NotificationType.Information));
             }
             else

@@ -44,7 +44,7 @@ namespace GeneralConfigSetter.ViewModels
         {
             Context = context;
             _patConfigFilePath = DataAccessService.GetPatConfigFilePath();
-            PatConfig = DataAccessService.GetPatConfigRawContent(_patConfigFilePath);
+            PatConfig = DataAccessService.GetConfigFileContent(_patConfigFilePath);
             _configState = PatConfig;
             _isUpdatePatConfigEnabled = false;
 
@@ -55,8 +55,8 @@ namespace GeneralConfigSetter.ViewModels
         {
             try
             {
-                DataAccessService.UpdatePatConfig(_patConfigFilePath, PatConfig);
-                Context.Initialize();
+                DataAccessService.UpdateConfigFile(_patConfigFilePath, PatConfig);
+                Context.InitializePats();
                 _configState = PatConfig;
                 _isUpdatePatConfigEnabled = false;
                 ShowMessageCommand.Execute(new NotificationModel("SUCCESS!!!!", NotificationType.Information));
