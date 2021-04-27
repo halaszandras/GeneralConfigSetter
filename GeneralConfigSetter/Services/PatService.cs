@@ -12,7 +12,7 @@ namespace GeneralConfigSetter.Services
         public static Dictionary<string, string> GetPats(string[] patConfigContent)
         {
             Dictionary<string, string> result = new();
-            result.Add("defaultKey", "<Invalid link!!!>");
+            result.Add("defaultKey", "111LinkIsNull111");
 
             for (var i = 0; i < patConfigContent.Length; i++)
             {

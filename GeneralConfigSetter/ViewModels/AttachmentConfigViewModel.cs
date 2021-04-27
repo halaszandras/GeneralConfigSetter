@@ -40,11 +40,11 @@ namespace GeneralConfigSetter.ViewModels
         {
             QueryText = Context.QueryText;
 
-            SourceServerName = Context.SourceServerName.Equals("defaultKey") ? "< Invalid link!!! >" : Context.SourceServerName;
+            SourceServerName = Context.SourceServerName.Equals("defaultKey") ? "111LinkIsNull111" : Context.SourceServerName;
             SourceCollectionUrl = Context.SourceCollectionUrl;
             SourceProjectName = Context.SourceProjectName;
 
-            TargetServerName = Context.TargetServerName.Equals("defaultKey") ? "< Invalid link!!! >" : Context.TargetServerName;
+            TargetServerName = Context.TargetServerName.Equals("defaultKey") ? "111LinkIsNull111" : Context.TargetServerName;
             TargetCollectionUrl = Context.TargetCollectionUrl;
             TargetProjectName = Context.TargetProjectName;
         }
@@ -132,7 +132,7 @@ namespace GeneralConfigSetter.ViewModels
                 //Get the path of specified file
                 string filePath = openFileDialog.FileName;
 
-                Services.ConfigUpdateService.UpdateGeneralConfig(Context, filePath);
+                Services.ConfigUpdateService.UpdateAttachmentConfig(Context, filePath);
                 ShowMessageCommand.Execute(new NotificationModel("SUCCESS!!!!", NotificationType.Information));
             }
             else

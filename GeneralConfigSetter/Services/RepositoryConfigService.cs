@@ -7,18 +7,18 @@ namespace GeneralConfigSetter.Services
         const char COLON = ':';
         const string EMPTY = "";
 
-        public static Dictionary<string, string> GetRepositories(string[] patConfigContent)
+        public static Dictionary<string, string> GetRepositories(string[] repositoryConfigContent)
         {
             Dictionary<string, string> result = new();
-            result.Add("defaultKey", "<Invalid link!!!>");
+            result.Add("defaultKey", "111LinkIsNull111");
 
-            for (var i = 0; i < patConfigContent.Length; i++)
+            for (var i = 0; i < repositoryConfigContent.Length; i++)
             {
-                if (patConfigContent[i] != EMPTY)
+                if (repositoryConfigContent[i] != EMPTY)
                 {
-                    if (patConfigContent[i].Contains(COLON))
+                    if (repositoryConfigContent[i].Contains(COLON))
                     {
-                        result.Add(patConfigContent[i].Trim(COLON), patConfigContent[i + 1]);
+                        result.Add(repositoryConfigContent[i].Trim(COLON), repositoryConfigContent[i + 1]);
                     }
                 }
             }

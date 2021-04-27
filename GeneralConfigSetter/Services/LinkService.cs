@@ -39,7 +39,7 @@ namespace GeneralConfigSetter.Services
                                 .Replace("%28", "(")
                                 .Replace("%29", ")");
             }
-            return "<Empty Project!!!>";
+            return "111ProjectIsNull111";
         }
 
         private static String GetLink(string rawLink)
@@ -54,7 +54,7 @@ namespace GeneralConfigSetter.Services
                 }
                 return String.Join('/', parts);
             }
-            return "<Empty Collection!!!>";
+            return "111CollectionIsNull111";
         }
 
         private static String GetServer(string rawLink)

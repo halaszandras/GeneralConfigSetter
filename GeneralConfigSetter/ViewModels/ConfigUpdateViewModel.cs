@@ -40,11 +40,11 @@ namespace GeneralConfigSetter.ViewModels
         {
             WorkItemProjectName = Context.WorkItemProjectName;
 
-            SourceServerName = Context.SourceServerName.Equals("defaultKey") ? "< Invalid link!!! >" : Context.SourceServerName;
+            SourceServerName = Context.SourceServerName.Equals("defaultKey") ? "111LinkIsNull111" : Context.SourceServerName;
             SourceCollectionUrl = Context.SourceCollectionUrl;
             SourceProjectName = Context.SourceProjectName;
 
-            TargetServerName = Context.TargetServerName.Equals("defaultKey") ? "< Invalid link!!! >" : Context.TargetServerName;
+            TargetServerName = Context.TargetServerName.Equals("defaultKey") ? "111LinkIsNull111" : Context.TargetServerName;
             TargetCollectionUrl = Context.TargetCollectionUrl;
             TargetProjectName = Context.TargetProjectName;
         }

@@ -33,7 +33,7 @@ namespace GeneralConfigSetter.ViewModels
         private void UpdateUiProperties()
         {
             QueryText = Context.QueryText;
-            TargetServerName = Context.TargetServerName.Equals("defaultKey") ? "< Invalid link!!! >" : Context.TargetServerName;
+            TargetServerName = Context.TargetServerName.Equals("defaultKey") ? "111LinkIsNull111" : Context.TargetServerName;
             TargetCollectionUrl = Context.TargetCollectionUrl;
             TargetProjectName = Context.TargetProjectName;
         }
