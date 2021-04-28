@@ -37,7 +37,8 @@ namespace GeneralConfigSetter.Services
                 }
                 return parts[^1].Replace("%20", " ")
                                 .Replace("%28", "(")
-                                .Replace("%29", ")");
+                                .Replace("%29", ")")
+                                .Trim();
             }
             return "111ProjectIsNull111";
         }
@@ -52,7 +53,7 @@ namespace GeneralConfigSetter.Services
                 {
                     parts.RemoveAt(parts.Count - 1);
                 }
-                return String.Join('/', parts);
+                return String.Join('/', parts).Trim();
             }
             return "111CollectionIsNull111";
         }
@@ -62,7 +63,7 @@ namespace GeneralConfigSetter.Services
             if (rawLink.Contains('/'))
             {
                 List<string> parts = new(rawLink.Split("."));
-                return parts[0].Split("//")[1];
+                return parts[0].Split("//")[1].Trim();
             }
             return "defaultKey";
         }

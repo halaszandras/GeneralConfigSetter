@@ -22,10 +22,7 @@ namespace GeneralConfigSetter.Services
             json.Target.Project = context.TargetProjectName;
             json.Target.PersonalAccessToken = context.ServerPats.FirstOrDefault(x => x.Key.ToLower() == context.TargetServerName.ToLower()).Value;
 
-            string result = JsonConvert.SerializeObject(json, Formatting.Indented);
-            string subject = "\"\\\\MigrationInbox\"";
-
-            result = result.Replace(subject, $"\"\\\\MigrationInbox\\\\{context.WorkItemProjectName}\"");
+            string result = UpdateMigrationInbox(context, json);
 
             File.WriteAllText(generalConfigFilePath, result);
         }
@@ -50,12 +47,17 @@ namespace GeneralConfigSetter.Services
 
             //processorChildren.First.ChildrenTokens[2] = context.QueryText;
 
+            string result = UpdateMigrationInbox(context, json);
+
+            File.WriteAllText(deleterConfigFilePath, result);
+        }
+
+        private static string UpdateMigrationInbox(IContext context, dynamic json)
+        {
             string result = JsonConvert.SerializeObject(json, Formatting.Indented);
             string subject = "\"\\\\MigrationInbox\"";
 
-            result = result.Replace(subject, $"\"\\\\MigrationInbox\\\\{context.WorkItemProjectName}\"");
-
-            File.WriteAllText(deleterConfigFilePath, result);
+            return result.Replace(subject, $"\"\\\\MigrationInbox\\\\{context.WorkItemProjectName.Trim()}\"");
         }
 
         public static void UpdateAttachmentConfig(IContext context, string attachmentConfigFilePath)
