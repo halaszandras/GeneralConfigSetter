@@ -15,7 +15,11 @@ namespace GeneralConfigSetter.ViewModels
         public string QueryTag
         {
             get { return _queryTag; }
-            set { SetField(ref _queryTag, value, nameof(QueryTag)); }
+            set 
+            {
+                value = InsertSplitters(value);
+                SetField(ref _queryTag, value, nameof(QueryTag)); 
+            }
         }
         public string FirstLinkInput
         {
@@ -105,9 +109,38 @@ namespace GeneralConfigSetter.ViewModels
             Context = context;
         }
 
+        private string InsertSplitters(string tagStrings)
+        {
+            tagStrings = CheckSplitters(tagStrings);
+
+            if(tagStrings.Length == 1 && tagStrings[tagStrings.Length - 1] == ';')
+            {
+                tagStrings = "";
+            }
+
+            if(tagStrings.Length >= 1)
+            {
+                if(tagStrings[tagStrings.Length - 1] != ';')
+                {
+                    tagStrings += ';';
+                }
+            }
+
+            return tagStrings;
+        }
+
+        private string CheckSplitters(string tagStrings)
+        {
+            while(tagStrings.Contains(";;"))
+            {
+                tagStrings = tagStrings.Replace(";;", ";");
+            }
+            return tagStrings;
+        }
+
         private void ExtractLinkData()
         {
-            Context.QueryText = $"AND [System.Tags] contains '{QueryTag}'";
+            Context.QueryText = Services.ConfigUpdateService.CreateQueryTags(QueryTag);
             Services.LinkService.GetSourceAndTargetData(Context, FirstLinkInput, SecondLinkInput);
             UpdateUiProperties();
         }

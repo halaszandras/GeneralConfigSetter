@@ -134,5 +134,28 @@ namespace GeneralConfigSetter.Services
 
             File.WriteAllText(attachmentConfigFilePath, result);
         }
+
+        public static string CreateQueryTags(string rawTags)
+        {
+            List<string> tags = new(rawTags.Split(';'));
+            tags.RemoveAt(tags.Count - 1);
+            string result = "";
+            if (tags.Count >= 2)
+            {
+                List<string> tagSentences = new List<string>();
+                result = "AND (";
+                foreach (string tag in tags)
+                {
+                    tagSentences.Add($"[System.Tags] contains '{tag}'");
+                }
+                result += string.Join(" OR ", tagSentences) + ")";
+            }
+            else if (tags.Count == 1)
+            {
+                result = $"[System.Tags] contains '{rawTags}'";
+            }
+            return "AND NOT [System.Tags] contains 'TRANSFERRED_ATTACHMENTS_MIGRATED' " +
+                    "AND NOT[System.Tags] contains 'TRANSFERRED_ATTACHMENTS_PROCESSED' " + result;
+        }
     }
 }
