@@ -1,9 +1,13 @@
-﻿using GeneralConfigSetter.Models;
+﻿using System;
+using GeneralConfigSetter.Models;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
+using Newtonsoft.Json.Linq;
 
 namespace GeneralConfigSetter.Services
 
@@ -12,6 +16,8 @@ namespace GeneralConfigSetter.Services
     {
         public static void UpdateGeneralConfig(IContext context, string generalConfigFilePath)
         {
+            UpdateMigrationInbox(context, generalConfigFilePath);
+
             dynamic json = JsonConvert.DeserializeObject(File.ReadAllText(generalConfigFilePath));
 
             json.Source.Collection = context.SourceCollectionUrl;
@@ -22,13 +28,15 @@ namespace GeneralConfigSetter.Services
             json.Target.Project = context.TargetProjectName;
             json.Target.PersonalAccessToken = context.ServerPats.FirstOrDefault(x => x.Key.ToLower() == context.TargetServerName.ToLower()).Value;
 
-            string result = UpdateMigrationInbox(context, json);
+            string result = JsonConvert.SerializeObject(json, Formatting.Indented);
 
             File.WriteAllText(generalConfigFilePath, result);
         }
 
         public static void UpdateDeleterConfig(IContext context, string deleterConfigFilePath)
         {
+            UpdateMigrationInbox(context, deleterConfigFilePath);
+
             dynamic json = JsonConvert.DeserializeObject(File.ReadAllText(deleterConfigFilePath));
 
             json.Target.Collection = context.TargetCollectionUrl;
@@ -45,24 +53,30 @@ namespace GeneralConfigSetter.Services
                 }
             }
 
-            //processorChildren.First.ChildrenTokens[2] = context.QueryText;
-
-            string result = UpdateMigrationInbox(context, json);
+            string result = JsonConvert.SerializeObject(json, Formatting.Indented);
 
             File.WriteAllText(deleterConfigFilePath, result);
         }
 
-        private static string UpdateMigrationInbox(IContext context, dynamic json)
+        private static void UpdateMigrationInbox(IContext context, string filePath)
         {
-            string result = JsonConvert.SerializeObject(json, Formatting.Indented);
-            string subject = "\"\\\\MigrationInbox\"";
+            string[] fileContent = File.ReadAllLines(filePath);
+            for (var index = 0; index < fileContent.Length; index++)
+            {
+                string line = fileContent[index];
+                if (line.Contains("MigrationInbox"))
+                {
+                    fileContent[index] = $"\"TargetPath\": \"\\\\MigrationInbox\\\\{context.WorkItemProjectName.Trim()}\"";
+                }
+            }
 
-            return result.Replace(subject, $"\"\\\\MigrationInbox\\\\{context.WorkItemProjectName.Trim()}\"");
+            string jsonString = string.Join("", fileContent);
+
+            File.WriteAllText(filePath, jsonString);
         }
 
         public static void UpdateAttachmentConfig(IContext context, string attachmentConfigFilePath)
         {
-            //NEED IMPLEMENTATION
             System.Xml.XmlDocument xmlDoc = new();
             xmlDoc.Load(attachmentConfigFilePath);
             System.Xml.XmlNode settings = xmlDoc.
@@ -152,10 +166,42 @@ namespace GeneralConfigSetter.Services
             }
             else if (tags.Count == 1)
             {
-                result = $"[System.Tags] contains '{rawTags}'";
+                result = $"AND [System.Tags] contains '{rawTags.Trim(';')}'";
             }
             return "AND NOT [System.Tags] contains 'TRANSFERRED_ATTACHMENTS_MIGRATED' " +
-                    "AND NOT[System.Tags] contains 'TRANSFERRED_ATTACHMENTS_PROCESSED' " + result;
+                    "AND NOT [System.Tags] contains 'TRANSFERRED_ATTACHMENTS_PROCESSED' " + result;
+        }
+
+        public static string ValidateInput(string input)
+        {
+            string output = Regex.Replace(input, "(?<!\r)\n", "\r\n")
+                                 .Replace(" ", "");
+
+            return output;
+        }
+
+        public static string ValidateUpdateInput(string input)
+        {
+            
+            var helper = input.ToCharArray().ToList();
+            helper.Reverse();
+            for (var index = 0; index < helper.Count; index++)
+            {
+                var character = helper[index];
+                if (character is '\r' or '\n')
+                {
+                    helper.RemoveAt(index);
+                    index--;
+                }
+                else
+                {
+                    break;
+                }
+            }
+
+            helper.Reverse();
+            var output = string.Join("",helper);
+            return output;
         }
     }
 }

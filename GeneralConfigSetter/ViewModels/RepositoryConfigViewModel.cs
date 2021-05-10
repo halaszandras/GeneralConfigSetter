@@ -4,6 +4,7 @@ using System.IO;
 using GeneralConfigSetter.Enums;
 using System;
 using static GeneralConfigSetter.Services.DataAccessService;
+using static GeneralConfigSetter.Services.ConfigUpdateService;
 
 namespace GeneralConfigSetter.ViewModels
 {
@@ -20,6 +21,7 @@ namespace GeneralConfigSetter.ViewModels
             get { return _repositoryConfig; }
             set
             {
+                value = ValidateInput(value);
                 SetField(ref _repositoryConfig, value, nameof(RepositoryConfig));
                 if (value == _configState)
                 {

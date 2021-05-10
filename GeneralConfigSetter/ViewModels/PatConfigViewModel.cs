@@ -4,6 +4,7 @@ using GeneralConfigSetter.Services;
 using System;
 using System.IO;
 using WpfFramework.Core;
+using static GeneralConfigSetter.Services.ConfigUpdateService;
 
 namespace GeneralConfigSetter.ViewModels
 {
@@ -20,6 +21,7 @@ namespace GeneralConfigSetter.ViewModels
             get { return _patConfig; }
             set
             {
+                value = ValidateInput(value);
                 SetField(ref _patConfig, value, nameof(PatConfig));
                 if (value == _configState)
                 {

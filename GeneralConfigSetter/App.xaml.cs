@@ -17,22 +17,8 @@ namespace GeneralConfigSetter
         {
             base.OnStartup(e);
 
-            //var builder = new ContainerBuilder();
-
             var generalConfigSetter = Assembly.GetExecutingAssembly();
             var wpfFramework = typeof(NavigationService).Assembly;
-
-            //builder.RegisterAssemblyTypes(generalConfigSetter);
-            //builder.RegisterAssemblyTypes(wpfFramework).SingleInstance();
-            //builder.RegisterType<ContextModel>().As<IContext>().SingleInstance();
-
-            //var container = builder.Build();
-
-            //using (var scope = container.BeginLifetimeScope())
-            //{
-            //    var mainWindow = scope.Resolve<MainWindowView>();
-            //    mainWindow.Show();
-            //}
 
             Container.RegisterTypeWithInterface<IContext, ContextModel>();
             Container.RegisterKeyedType<ConfigUpdateView>(typeof(ConfigUpdateView), "ConfigUpdateView");

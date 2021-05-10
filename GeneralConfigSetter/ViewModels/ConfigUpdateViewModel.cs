@@ -15,7 +15,11 @@ namespace GeneralConfigSetter.ViewModels
         public string ProjectName
         {
             get { return _projectName; }
-            set { SetField(ref _projectName, value, nameof(ProjectName)); }
+            set
+            {
+                value = value.Trim();
+                SetField(ref _projectName, value, nameof(ProjectName));
+            }
         }
         public string FirstLinkInput
         {

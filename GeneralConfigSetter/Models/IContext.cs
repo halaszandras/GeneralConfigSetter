@@ -17,5 +17,6 @@ namespace GeneralConfigSetter.Models
 
         void InitializePats();
         void InitializeRepositories();
+        void InitializeFiles();
     }
 }

@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <AssemblyVersion>1.0.0.1</AssemblyVersion>
+    <FileVersion>1.0.0.1</FileVersion>
+    <Version>1.0.0.1</Version>
+    <Authors>Kereszturi András, Halász András Péter @ Evosoft Hungary Kft.</Authors>
+    <Company>Siemens GMBH.</Company>
+    <Product>GeneralConfigSetter</Product>
+    <Copyright>Copyright © 2021, Siemens GMBH.</Copyright>
+  </PropertyGroup>
+
+</Project>

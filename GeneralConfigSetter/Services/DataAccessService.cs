@@ -1,21 +1,39 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Text;
+using ACrypto;
+using static GeneralConfigSetter.Services.ConfigUpdateService;
 
 namespace GeneralConfigSetter.Services
 {
     public static class DataAccessService
     {
-        public static string[] AccessConfigContent(string filePath)
+        public static Dictionary<string, string> AccessConfigContent(string filePath)
         {
-            string[] fileContent = File.ReadAllLines(filePath);
+            Dictionary<string, string> fileContent = new ACrypto.LibraryInterface().DecryptDictionary(filePath);
 
             return fileContent;
         }
 
+        public static Dictionary<string, string> AccessRawConfigContent(string filePath)
+        {
+            Dictionary<string, string> configDictionary = PatService.GetPats(File.ReadAllLines(filePath));
+            configDictionary.Remove("defaultKey");
+            return configDictionary;
+        }
+
         public static string GetConfigFileContent(string filePath)
         {
-            string fileContent = File.ReadAllText(filePath);
-            return fileContent;
+            StringBuilder stringBuilder = new();
+
+            Dictionary<string, string> fileContentDictionary = AccessConfigContent(filePath);
+            foreach (var stringPair in fileContentDictionary)
+            {
+                stringBuilder.Append($"{stringPair.Key}:{Environment.NewLine}{stringPair.Value}{Environment.NewLine}{Environment.NewLine}");
+            }
+            
+            return stringBuilder.ToString();
         }
 
         public static string GetPatConfigFilePath()
@@ -43,13 +61,17 @@ namespace GeneralConfigSetter.Services
             bool folderExists = Directory.Exists(Path.GetDirectoryName(filePath));
 
             if (!folderExists)
-                Directory.CreateDirectory(Path.GetDirectoryName(filePath));
+            {
+                DirectoryInfo directoryInfo = Directory.CreateDirectory(Path.GetDirectoryName(filePath));
+                directoryInfo.Attributes = FileAttributes.Directory | FileAttributes.Hidden;
+            }
 
             bool fileExists = File.Exists(filePath);
 
             if (!fileExists)
             {
                 File.Create(filePath).Dispose();
+                File.SetAttributes(filePath, FileAttributes.Hidden);
             }
         }
 
@@ -62,6 +84,8 @@ namespace GeneralConfigSetter.Services
         /// <exception cref="IOException"/>
         public static void UpdateConfigFile(string filePath, string newContent)
         {
+            string validNewContent = ValidateUpdateInput(newContent);
+
             if (File.Exists(filePath))
             {
                 File.Delete(filePath);
@@ -69,8 +93,7 @@ namespace GeneralConfigSetter.Services
 
             try
             {
-                using StreamWriter streamWriter = new(filePath);
-                streamWriter.Write(newContent);
+                new LibraryInterface().EncryptDictionary(PatService.GetPats(validNewContent), filePath);
             }
             catch (DirectoryNotFoundException)
             {

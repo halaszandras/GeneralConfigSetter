@@ -1,10 +1,12 @@
-﻿using Autofac.Features.AttributeFilters;
+﻿using System.Collections.Generic;
+using Autofac.Features.AttributeFilters;
 using GeneralConfigSetter.Models;
 using GeneralConfigSetter.Views.Pages;
 using static GeneralConfigSetter.Services.PatService;
 using WpfFramework.Core;
 using GeneralConfigSetter.Enums;
 using GeneralConfigSetter.Services;
+using ACrypto;
 
 namespace GeneralConfigSetter.ViewModels
 {

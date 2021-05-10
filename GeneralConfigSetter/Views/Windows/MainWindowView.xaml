@@ -69,6 +69,7 @@
                                   Opacity="{Binding NotificationViewModel.MessageOpacity}">
             <TextBlock HorizontalAlignment="Center"
                        Margin="6"
+                       TextWrapping="Wrap"
                        Text="{Binding NotificationViewModel.LastMessage}" />
         </materialDesign:ColorZone>
 

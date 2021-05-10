@@ -1,7 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using ACrypto;
 using static GeneralConfigSetter.Services.DataAccessService;
-using static GeneralConfigSetter.Services.PatService;
-using static GeneralConfigSetter.Services.RepositoryConfigService;
 
 namespace GeneralConfigSetter.Models
 {
@@ -20,21 +21,67 @@ namespace GeneralConfigSetter.Models
 
         public ContextModel()
         {
-
+            InitializeFiles();
         }
 
         public void InitializePats()
         {
             var patConfigFilePath = GetPatConfigFilePath();
-            var patConfigContent = AccessConfigContent(patConfigFilePath);
-            ServerPats = GetPats(patConfigContent);
+            try
+            {
+                ServerPats = AccessConfigContent(patConfigFilePath);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e);
+            }
         }
 
         public void InitializeRepositories()
         {
             var repositoryConfigFilePath = GetRepositoryConfigFilePath();
-            var repositoryConfigContent = AccessConfigContent(repositoryConfigFilePath);
-            ServerRepositories = GetRepositories(repositoryConfigContent);
+            try
+            {
+                ServerRepositories = AccessConfigContent(repositoryConfigFilePath);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e);
+            }
+        }
+
+        public void InitializeFiles()
+        {
+            Dictionary<string, string> patConfig = new();
+            string patConfigFilePath = "";
+            Dictionary<string, string> repoConfig = new();
+            string repositoryConfigFilePath = "";
+
+            try
+            {
+                patConfigFilePath = GetPatConfigFilePath();
+                patConfig = AccessRawConfigContent(patConfigFilePath);
+            }
+            catch(Exception e)
+            {
+                Debug.WriteLine(e);
+            }
+            
+            try
+            {
+                repositoryConfigFilePath = GetRepositoryConfigFilePath();
+                repoConfig = AccessRawConfigContent(repositoryConfigFilePath);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e);
+            }
+
+            if (patConfig.Count > 0 && repoConfig.Count > 0)
+            {
+                new LibraryInterface().InitializeCryptedFiles(patConfigFilePath, patConfig, repositoryConfigFilePath,
+                    repoConfig);
+            }
         }
     }
 }

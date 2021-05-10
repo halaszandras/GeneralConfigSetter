@@ -111,6 +111,7 @@ namespace GeneralConfigSetter.ViewModels
 
         private string InsertSplitters(string tagStrings)
         {
+            tagStrings = tagStrings.Replace(" ", "");
             tagStrings = CheckSplitters(tagStrings);
 
             if(tagStrings.Length == 1 && tagStrings[tagStrings.Length - 1] == ';')
