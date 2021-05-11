@@ -17,9 +17,9 @@
                       Title="General Config Updater"
                       Icon="pack://application:,,,/Resources/ninjaCat.png"
                       Height="725"
-                      Width="550"
+                      Width="580"
                       MinHeight="725"
-                      MinWidth="550"
+                      MinWidth="580"
                       WindowStartupLocation="CenterScreen"
                       BorderThickness="0"
                       GlowBrush="Black"
@@ -47,20 +47,41 @@
 
         <Menu Grid.Column="0"
               IsMainMenu="True">
-            <MenuItem Header="_General Config"
-                      Command="{Binding LoadConfigUpdateViewCommand}" />
-            <MenuItem Header="_Deleter Config"
-                      Command="{Binding LoadDeleterConfigViewCommand}" />
-            <MenuItem Header="_Attachment Config"
-                      Command="{Binding LoadAttachmentConfigViewCommand}" />
-
+            <MenuItem Header="_JSON Configs"
+                      Icon="{materialDesign:PackIcon Kind=CodeJson}">
+                <MenuItem Header="_Area/Iteration Config"
+                          Icon="{materialDesign:PackIcon Kind=NewspaperVariantOutline}"
+                          Command="{Binding LoadConfigUpdateViewCommand}" />
+                <MenuItem Header="TestItems Config"
+                          Icon="{materialDesign:PackIcon Kind=TestTube}"
+                          Command="{Binding LoadDeleterConfigViewCommand}" />
+                <MenuItem Header="_Deleter Config"
+                          Icon="{materialDesign:PackIcon Kind=Trash}"
+                          Command="{Binding LoadDeleterConfigViewCommand}" />
+            </MenuItem>
+            <MenuItem Header="_XML Configs"
+                      Icon="{materialDesign:PackIcon Kind=Xml}">
+                <MenuItem Header="_Attachment Config"
+                          Icon="{materialDesign:PackIcon Kind=Paperclip}"
+                          Command="{Binding LoadAttachmentConfigViewCommand}" />
+                <MenuItem Header="_Bugfamily Config"
+                          Icon="{materialDesign:PackIcon Kind=Ladybug}" />
+            </MenuItem>
+            <MenuItem Header="_Tweaks"
+                      Icon="{materialDesign:PackIcon Kind=Screwdriver}">
+                <MenuItem Header="_Locking"
+                          Icon="{materialDesign:PackIcon Kind=Lock}"/>
+            </MenuItem>
             <MenuItem Header="_Settings"
                       Icon="{materialDesign:PackIcon Kind=Cog}">
                 <MenuItem Header="_PAT Config"
                           Icon="{materialDesign:PackIcon Kind=Paw}"
                           Command="{Binding LoadPatConfigViewCommand}" />
                 <MenuItem Header="_Repository Config"
+                          Icon="{materialDesign:PackIcon Kind=Database}"
                           Command="{Binding LoadRepositoryConfigViewCommand}" />
+                <MenuItem Header="_Help"
+                          Icon="{materialDesign:PackIcon Kind=HelpCircle}" />
             </MenuItem>
         </Menu>
         
