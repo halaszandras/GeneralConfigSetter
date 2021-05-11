@@ -6,18 +6,17 @@ using WpfFramework.Core;
 
 namespace GeneralConfigSetter.ViewModels
 {
-    public class AttachmentConfigViewModel : ViewModelBase
+    public class BugFamilyViewModel : ViewModelBase
     {
         private string _queryTag = "";
         private int _queryTagCounter;
-        private string _firstLinkInput = "";
-        private string _secondLinkInput = "";
+        private string _linkInput = "";
         private IContext _context;
 
         public string QueryTag
         {
             get { return _queryTag; }
-            set 
+            set
             {
                 value = InsertSplitters(value);
                 SetField(ref _queryTag, value, nameof(QueryTag));
@@ -32,16 +31,12 @@ namespace GeneralConfigSetter.ViewModels
                 SetField(ref _queryTagCounter, value, nameof(QueryTagCounter));
             }
         }
-        public string FirstLinkInput
+        public string LinkInput
         {
-            get { return _firstLinkInput; }
-            set { SetField(ref _firstLinkInput, value, nameof(FirstLinkInput)); }
+            get { return _linkInput; }
+            set { SetField(ref _linkInput, value, nameof(LinkInput)); }
         }
-        public string SecondLinkInput
-        {
-            get { return _secondLinkInput; }
-            set { SetField(ref _secondLinkInput, value, nameof(SecondLinkInput)); }
-        }
+        
         public IContext Context
         {
             get { return _context; }
@@ -55,19 +50,12 @@ namespace GeneralConfigSetter.ViewModels
         {
             QueryText = Context.QueryText;
 
-            SourceServerName = Context.SourceServerName.Equals("defaultKey") ? "111LinkIsNull111" : Context.SourceServerName;
-            SourceCollectionUrl = Context.SourceCollectionUrl;
-            SourceProjectName = Context.SourceProjectName;
-
             TargetServerName = Context.TargetServerName.Equals("defaultKey") ? "111LinkIsNull111" : Context.TargetServerName;
             TargetCollectionUrl = Context.TargetCollectionUrl;
             TargetProjectName = Context.TargetProjectName;
         }
 
         private string _queryText = "";
-        private string _sourceServerName = "";
-        private string _sourceCollectionUrl = "";
-        private string _sourceProjectName = "";
         private string _targetServerName = "";
         private string _targetCollectionUrl = "";
         private string _targetProjectName = "";
@@ -76,21 +64,6 @@ namespace GeneralConfigSetter.ViewModels
         {
             get { return _queryText; }
             set { SetField(ref _queryText, value, nameof(QueryText)); }
-        }
-        public string SourceServerName
-        {
-            get { return _sourceServerName; }
-            set { SetField(ref _sourceServerName, value, nameof(SourceServerName)); }
-        }
-        public string SourceCollectionUrl
-        {
-            get { return _sourceCollectionUrl; }
-            set { SetField(ref _sourceCollectionUrl, value, nameof(SourceCollectionUrl)); }
-        }
-        public string SourceProjectName
-        {
-            get { return _sourceProjectName; }
-            set { SetField(ref _sourceProjectName, value, nameof(SourceProjectName)); }
         }
         public string TargetServerName
         {
@@ -110,13 +83,13 @@ namespace GeneralConfigSetter.ViewModels
 
 
         public RelayCommand ExtractLinkDataCommand { get; set; }
-        public RelayCommand UpdateAttachmentConfigCommand { get; set; }
+        public RelayCommand UpdateBugFamilyConfigCommand { get; set; }
         public RelayCommandGeneric<NotificationModel, bool> ShowMessageCommand { get; internal set; }
 
-        public AttachmentConfigViewModel(IContext context)
+        public BugFamilyViewModel(IContext context)
         {
             ExtractLinkDataCommand = new RelayCommand(ExtractLinkData, IsExtractLinkDataEnabled);
-            UpdateAttachmentConfigCommand = new RelayCommand(UpdateAttachmentConfig, IsUpdateAttachmentConfigEnabled);
+            UpdateBugFamilyConfigCommand = new RelayCommand(UpdateBugFamilyConfig, IsUpdateBugFamilyConfigEnabled);
             Context = context;
         }
 
@@ -125,14 +98,14 @@ namespace GeneralConfigSetter.ViewModels
             tagStrings = tagStrings.Replace(" ", "");
             tagStrings = CheckSplitters(tagStrings);
 
-            if(tagStrings.Length == 1 && tagStrings[tagStrings.Length - 1] == ';')
+            if (tagStrings.Length == 1 && tagStrings[tagStrings.Length - 1] == ';')
             {
                 tagStrings = "";
             }
 
-            if(tagStrings.Length >= 1)
+            if (tagStrings.Length >= 1)
             {
-                if(tagStrings[tagStrings.Length - 1] != ';')
+                if (tagStrings[tagStrings.Length - 1] != ';')
                 {
                     tagStrings += ';';
                 }
@@ -143,7 +116,7 @@ namespace GeneralConfigSetter.ViewModels
 
         private string CheckSplitters(string tagStrings)
         {
-            while(tagStrings.Contains(";;"))
+            while (tagStrings.Contains(";;"))
             {
                 tagStrings = tagStrings.Replace(";;", ";");
             }
@@ -152,21 +125,21 @@ namespace GeneralConfigSetter.ViewModels
 
         private void ExtractLinkData()
         {
-            Context.QueryText = Services.ConfigUpdateService.CreateQueryTags(QueryTag);
-            Services.LinkService.GetSourceAndTargetData(Context, FirstLinkInput, SecondLinkInput);
+            Context.QueryText = QueryTag.Trim(';');
+            Services.LinkService.GetTargetData(Context, LinkInput);
             UpdateUiProperties();
         }
 
         private bool IsExtractLinkDataEnabled()
         {
-            if (QueryTag != "" && FirstLinkInput != "" && SecondLinkInput != "")
+            if (QueryTag != "" && LinkInput != "" && LinkInput != "")
             {
                 return true;
             }
             return false;
         }
 
-        private void UpdateAttachmentConfig()
+        private void UpdateBugFamilyConfig()
         {
             OpenFileDialog openFileDialog = new();
             openFileDialog.Filter = "XML config files (*.config)|*.config";
@@ -177,7 +150,7 @@ namespace GeneralConfigSetter.ViewModels
                 //Get the path of specified file
                 string filePath = openFileDialog.FileName;
 
-                Services.ConfigUpdateService.UpdateAttachmentConfig(Context, filePath);
+                Services.ConfigUpdateService.UpdateBugFamilyConfig(Context, filePath);
                 ShowMessageCommand.Execute(new NotificationModel("SUCCESS!!!!", NotificationType.Information));
             }
             else
@@ -186,7 +159,7 @@ namespace GeneralConfigSetter.ViewModels
             }
         }
 
-        private bool IsUpdateAttachmentConfigEnabled()
+        private bool IsUpdateBugFamilyConfigEnabled()
         {
             if (TargetCollectionUrl != "" && TargetProjectName != "" && TargetServerName != "")
             {

@@ -65,12 +65,14 @@
                           Icon="{materialDesign:PackIcon Kind=Paperclip}"
                           Command="{Binding LoadAttachmentConfigViewCommand}" />
                 <MenuItem Header="_Bugfamily Config"
-                          Icon="{materialDesign:PackIcon Kind=Ladybug}" />
+                          Icon="{materialDesign:PackIcon Kind=Ladybug}"
+                          Command="{Binding LoadBugFamilyViewCommand}"/>
             </MenuItem>
             <MenuItem Header="_Tweaks"
                       Icon="{materialDesign:PackIcon Kind=Screwdriver}">
                 <MenuItem Header="_Locking"
-                          Icon="{materialDesign:PackIcon Kind=Lock}"/>
+                          Icon="{materialDesign:PackIcon Kind=Lock}"
+                          Command="{Binding LockWorkItemsCommand}"/>
             </MenuItem>
             <MenuItem Header="_Settings"
                       Icon="{materialDesign:PackIcon Kind=Cog}">
@@ -81,7 +83,8 @@
                           Icon="{materialDesign:PackIcon Kind=Database}"
                           Command="{Binding LoadRepositoryConfigViewCommand}" />
                 <MenuItem Header="_Help"
-                          Icon="{materialDesign:PackIcon Kind=HelpCircle}" />
+                          Icon="{materialDesign:PackIcon Kind=HelpCircle}"
+                          Command="{Binding LoadInfoViewCommand}"/>
             </MenuItem>
         </Menu>
         

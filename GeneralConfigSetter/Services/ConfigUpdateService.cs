@@ -149,6 +149,88 @@ namespace GeneralConfigSetter.Services
             File.WriteAllText(attachmentConfigFilePath, result);
         }
 
+        public static void UpdateBugFamilyConfig(IContext context, string attachmentConfigFilePath)
+        {
+            context.SourceServerName = "venus";
+            context.SourceCollectionUrl = "https://venus.tfs.siemens.net/tfs/TIA";
+            context.SourceProjectName = "TIA";
+
+            System.Xml.XmlDocument xmlDoc = new();
+            xmlDoc.Load(attachmentConfigFilePath);
+            System.Xml.XmlNode settings = xmlDoc.
+                SelectSingleNode("/configuration/appSettings") as System.Xml.XmlElement;
+
+            List<string> fieldNames = new()
+            {
+                "SourceCollectionURL",
+                "SourceTeamProject",
+                "TargetCollectionURL",
+                "TargetTeamProject",
+                "QueryBits",
+                "WorkItemIds",
+                "SourcePersonalAccessToken",
+                "TargetPersonalAccessToken"
+            };
+
+            if (settings != null)
+            {
+                foreach (System.Xml.XmlNode childNode in settings.ChildNodes)
+                {
+                    foreach (string fieldName in fieldNames)
+                    {
+                        if (childNode.OuterXml.ToLower().Contains(fieldName.ToLower()))
+                        {
+                            switch (fieldName)
+                            {
+                                case "SourceCollectionURL":
+                                    childNode.Attributes[1].Value = context.SourceCollectionUrl;
+                                    break;
+                                case "SourceTeamProject":
+                                    childNode.Attributes[1].Value = context.SourceProjectName;
+                                    break;
+                                case "TargetCollectionURL":
+                                    childNode.Attributes[1].Value = context.TargetCollectionUrl;
+                                    break;
+                                case "TargetTeamProject":
+                                    childNode.Attributes[1].Value = context.TargetProjectName;
+                                    break;
+                                case "QueryBits":
+                                    childNode.Attributes[1].Value = context.QueryText;
+                                    break;
+                                case "WorkItemIds":
+                                    childNode.Attributes[1].Value = "";
+                                    break;
+                                case "SourcePersonalAccessToken":
+                                    childNode.Attributes[1].Value = context.ServerPats.FirstOrDefault(x => x.Key.ToLower() == context.SourceServerName.ToLower()).Value;
+                                    break;
+                                case "TargetPersonalAccessToken":
+                                    childNode.Attributes[1].Value = context.ServerPats.FirstOrDefault(x => x.Key.ToLower() == context.TargetServerName.ToLower()).Value;
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+                    }
+                }
+            }
+
+            using var stringWriter = new StringWriter();
+            System.Xml.XmlWriterSettings xmlWriterSettings = new()
+            {
+                Indent = true,
+                IndentChars = "  ",
+                NewLineChars = "\r\n",
+                NewLineHandling = System.Xml.NewLineHandling.Replace,
+                Encoding = Encoding.UTF8
+            };
+            using var xmlTextWriter = System.Xml.XmlWriter.Create(stringWriter, xmlWriterSettings);
+            xmlDoc.WriteTo(xmlTextWriter);
+            xmlTextWriter.Flush();
+            string result = stringWriter.GetStringBuilder().ToString();
+
+            File.WriteAllText(attachmentConfigFilePath, result);
+        }
+
         public static string CreateQueryTags(string rawTags)
         {
             List<string> tags = new(rawTags.Split(';'));

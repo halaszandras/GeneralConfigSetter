@@ -7,6 +7,7 @@ using WpfFramework.Core;
 using GeneralConfigSetter.Enums;
 using GeneralConfigSetter.Services;
 using ACrypto;
+using Microsoft.Win32;
 
 namespace GeneralConfigSetter.ViewModels
 {
@@ -17,6 +18,8 @@ namespace GeneralConfigSetter.ViewModels
         private readonly AttachmentConfigView _attachmentConfigView;
         private readonly RepositoryConfigView _repositoryConfigView;
         private readonly ConfigUpdateView _configUpdateView;
+        private readonly BugFamilyView _bugFamilyView;
+        private readonly InfoView _infoView;
 
         public NavigationService NavigationService { get; }
         public RelayCommand LoadConfigUpdateViewCommand { get; set; }
@@ -24,6 +27,9 @@ namespace GeneralConfigSetter.ViewModels
         public RelayCommand LoadDeleterConfigViewCommand { get; set; }
         public RelayCommand LoadAttachmentConfigViewCommand { get; set; }
         public RelayCommand LoadRepositoryConfigViewCommand { get; set; }
+        public RelayCommand LoadBugFamilyViewCommand { get; set; }
+        public RelayCommand LoadInfoViewCommand { get; set; }
+        public RelayCommand LockWorkItemsCommand { get; set; }
         public RelayCommandGeneric<NotificationModel, bool> ShowMessageCommand { get; set; }
         public IContext Context { get; set; }
         public NotificationViewModel NotificationViewModel { get; set; }
@@ -34,6 +40,8 @@ namespace GeneralConfigSetter.ViewModels
                                    DeleterConfigView deleterConfigView,
                                    AttachmentConfigView attachmentConfigView,
                                    RepositoryConfigView repositoryConfigView,
+                                   BugFamilyView bugFamilyView,
+                                   InfoView infoView,
                                    IContext context,
                                    NotificationViewModel notificationViewModel)
         {
@@ -43,6 +51,8 @@ namespace GeneralConfigSetter.ViewModels
             _deleterConfigView = deleterConfigView;
             _attachmentConfigView = attachmentConfigView;
             _repositoryConfigView = repositoryConfigView;
+            _bugFamilyView = bugFamilyView;
+            _infoView = infoView;
             _configUpdateView = configUpdateView;
             Context = context;
             Context.InitializePats();
@@ -54,13 +64,17 @@ namespace GeneralConfigSetter.ViewModels
             LoadDeleterConfigViewCommand = new RelayCommand(LoadDeleterConfigView, IsDeleterConfigViewEnabled);
             LoadAttachmentConfigViewCommand = new RelayCommand(LoadAttachmentConfigView, IsAttachmentConfigViewEnabled);
             LoadRepositoryConfigViewCommand = new RelayCommand(LoadRepositoryConfigView, IsRepositoryConfigViewEnabled);
+            LoadBugFamilyViewCommand = new RelayCommand(LoadBugFamilyView, IsBugFamilyViewEnabled);
+            LoadInfoViewCommand = new RelayCommand(LoadInfoView, IsInfoViewEnabled);
             ShowMessageCommand = new RelayCommandGeneric<NotificationModel, bool>(NotificationViewModel.ShowMessage, NotificationViewModel.IsShowMessageEnabled);
+            LockWorkItemsCommand = new RelayCommand(LockWorkItems, IsLockWorkItemsEnabled);
 
             _patConfigView.ShowMessageCommand = ShowMessageCommand;
             _configUpdateView.ShowMessageCommand = ShowMessageCommand;
             _deleterConfigView.ShowMessageCommand = ShowMessageCommand;
             _attachmentConfigView.ShowMessageCommand = ShowMessageCommand;
             _repositoryConfigView.ShowMessageCommand = ShowMessageCommand;
+            _bugFamilyView.ShowMessageCommand = ShowMessageCommand;
 
 
             CheckPatFreshness(DataAccessService.GetPatConfigFilePath());
@@ -83,6 +97,24 @@ namespace GeneralConfigSetter.ViewModels
             }
         }
 
+        private void LoadBugFamilyView()
+        {
+            NavigationService.NavigateTo(_bugFamilyView);
+        }
+
+        private bool IsBugFamilyViewEnabled()
+        {
+            return !NavigationService.IsActiveContent(_bugFamilyView);
+        }
+        private void LoadInfoView()
+        {
+            NavigationService.NavigateTo(_infoView);
+        }
+
+        private bool IsInfoViewEnabled()
+        {
+            return !NavigationService.IsActiveContent(_infoView);
+        }
         private void LoadConfigUpdateView()
         {
             NavigationService.NavigateTo(_configUpdateView);            
@@ -131,6 +163,33 @@ namespace GeneralConfigSetter.ViewModels
         private bool IsRepositoryConfigViewEnabled()
         {
             return !NavigationService.IsActiveContent(_repositoryConfigView);
+        }
+
+        private void LockWorkItems()
+        {
+            OpenFileDialog openFileDialog = new();
+            openFileDialog.Filter = "JSON files (*.json)|*.json";
+            openFileDialog.Multiselect = true;
+            openFileDialog.Title = "Select Configs which should lock workitems.";
+            var result = openFileDialog.ShowDialog();
+
+            if (result != null && result == true)
+            {
+                //Get the path of specified file
+                string[] filePaths = openFileDialog.FileNames;
+
+                WitLockingService.Lock(filePaths);
+                ShowMessageCommand.Execute(new NotificationModel("SUCCESS!!!!", NotificationType.Information));
+            }
+            else
+            {
+                ShowMessageCommand.Execute(new NotificationModel("But why? :(", NotificationType.Error));
+            }
+        }
+
+        private bool IsLockWorkItemsEnabled()
+        {
+            return true;
         }
     }
 }
