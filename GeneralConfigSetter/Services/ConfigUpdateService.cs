@@ -231,7 +231,7 @@ namespace GeneralConfigSetter.Services
             File.WriteAllText(attachmentConfigFilePath, result);
         }
 
-        public static string CreateQueryTags(string rawTags)
+        public static string CreateAttachmentQueryBit(string rawTags)
         {
             List<string> tags = new(rawTags.Split(';'));
             tags.RemoveAt(tags.Count - 1);

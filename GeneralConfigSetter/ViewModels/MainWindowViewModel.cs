@@ -20,6 +20,7 @@ namespace GeneralConfigSetter.ViewModels
         private readonly ConfigUpdateView _configUpdateView;
         private readonly BugFamilyView _bugFamilyView;
         private readonly InfoView _infoView;
+        private readonly TestItemsView _testItemsView;
 
         public NavigationService NavigationService { get; }
         public RelayCommand LoadConfigUpdateViewCommand { get; set; }
@@ -29,6 +30,7 @@ namespace GeneralConfigSetter.ViewModels
         public RelayCommand LoadRepositoryConfigViewCommand { get; set; }
         public RelayCommand LoadBugFamilyViewCommand { get; set; }
         public RelayCommand LoadInfoViewCommand { get; set; }
+        public RelayCommand LoadTestItemsViewCommand { get; set; }
         public RelayCommand LockWorkItemsCommand { get; set; }
         public RelayCommandGeneric<NotificationModel, bool> ShowMessageCommand { get; set; }
         public IContext Context { get; set; }
@@ -42,6 +44,7 @@ namespace GeneralConfigSetter.ViewModels
                                    RepositoryConfigView repositoryConfigView,
                                    BugFamilyView bugFamilyView,
                                    InfoView infoView,
+                                   TestItemsView testItemsView,
                                    IContext context,
                                    NotificationViewModel notificationViewModel)
         {
@@ -53,6 +56,7 @@ namespace GeneralConfigSetter.ViewModels
             _repositoryConfigView = repositoryConfigView;
             _bugFamilyView = bugFamilyView;
             _infoView = infoView;
+            _testItemsView = testItemsView;
             _configUpdateView = configUpdateView;
             Context = context;
             Context.InitializePats();
@@ -66,6 +70,7 @@ namespace GeneralConfigSetter.ViewModels
             LoadRepositoryConfigViewCommand = new RelayCommand(LoadRepositoryConfigView, IsRepositoryConfigViewEnabled);
             LoadBugFamilyViewCommand = new RelayCommand(LoadBugFamilyView, IsBugFamilyViewEnabled);
             LoadInfoViewCommand = new RelayCommand(LoadInfoView, IsInfoViewEnabled);
+            LoadTestItemsViewCommand = new RelayCommand(LoadTestItemsView, IsTestItemsViewEnabled);
             ShowMessageCommand = new RelayCommandGeneric<NotificationModel, bool>(NotificationViewModel.ShowMessage, NotificationViewModel.IsShowMessageEnabled);
             LockWorkItemsCommand = new RelayCommand(LockWorkItems, IsLockWorkItemsEnabled);
 
@@ -75,7 +80,7 @@ namespace GeneralConfigSetter.ViewModels
             _attachmentConfigView.ShowMessageCommand = ShowMessageCommand;
             _repositoryConfigView.ShowMessageCommand = ShowMessageCommand;
             _bugFamilyView.ShowMessageCommand = ShowMessageCommand;
-
+            _testItemsView.ShowMessageCommand = ShowMessageCommand;
 
             CheckPatFreshness(DataAccessService.GetPatConfigFilePath());
         }
@@ -115,16 +120,24 @@ namespace GeneralConfigSetter.ViewModels
         {
             return !NavigationService.IsActiveContent(_infoView);
         }
-        private void LoadConfigUpdateView()
+        
+        private void LoadTestItemsView()
         {
-            NavigationService.NavigateTo(_configUpdateView);            
+            NavigationService.NavigateTo(_testItemsView);
+        }
+        private bool IsTestItemsViewEnabled()
+        {
+            return !NavigationService.IsActiveContent(_testItemsView);
         }
 
         private bool IsConfigUpdateViewEnabled()
         {
             return !NavigationService.IsActiveContent(_configUpdateView);
         }
-
+        private void LoadConfigUpdateView()
+        {
+            NavigationService.NavigateTo(_configUpdateView);
+        }
         private void LoadPatConfigView()
         {
             NavigationService.NavigateTo(_patConfigView);

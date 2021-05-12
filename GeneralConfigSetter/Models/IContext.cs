@@ -5,6 +5,7 @@ namespace GeneralConfigSetter.Models
     public interface IContext
     {
         string QueryText { get; set; }
+        string TestPlanNamesText { get; set; }
         Dictionary<string, string> ServerPats { get; set; }
         Dictionary<string, string> ServerRepositories { get; set; }
         string SourceCollectionUrl { get; set; }

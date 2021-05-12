@@ -12,6 +12,7 @@ namespace GeneralConfigSetter.Models
         public Dictionary<string, string> ServerRepositories { get; set; } = new Dictionary<string, string>();
         public string WorkItemProjectName { get; set; }
         public string QueryText { get; set; }
+        public string TestPlanNamesText { get; set; } = "";
         public string SourceServerName { get; set; }
         public string SourceCollectionUrl { get; set; }
         public string SourceProjectName { get; set; }

@@ -9,7 +9,6 @@ namespace GeneralConfigSetter.ViewModels
     public class BugFamilyViewModel : ViewModelBase
     {
         private string _queryTag = "";
-        private int _queryTagCounter;
         private string _linkInput = "";
         private IContext _context;
 
@@ -20,16 +19,12 @@ namespace GeneralConfigSetter.ViewModels
             {
                 value = InsertSplitters(value);
                 SetField(ref _queryTag, value, nameof(QueryTag));
-                QueryTagCounter = _queryTag.Count(x => x.Equals(';'));
+                OnPropertyChanged(nameof(QueryTagCounter));
             }
         }
         public int QueryTagCounter
         {
-            get { return _queryTagCounter; }
-            set
-            {
-                SetField(ref _queryTagCounter, value, nameof(QueryTagCounter));
-            }
+            get { return _queryTag.Count(x => x.Equals(';')); }
         }
         public string LinkInput
         {

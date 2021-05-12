@@ -9,7 +9,6 @@ namespace GeneralConfigSetter.ViewModels
     public class AttachmentConfigViewModel : ViewModelBase
     {
         private string _queryTag = "";
-        private int _queryTagCounter;
         private string _firstLinkInput = "";
         private string _secondLinkInput = "";
         private IContext _context;
@@ -21,16 +20,12 @@ namespace GeneralConfigSetter.ViewModels
             {
                 value = InsertSplitters(value);
                 SetField(ref _queryTag, value, nameof(QueryTag));
-                QueryTagCounter = _queryTag.Count(x => x.Equals(';'));
+                OnPropertyChanged(nameof(QueryTagCounter));
             }
         }
         public int QueryTagCounter
         {
-            get { return _queryTagCounter; }
-            set
-            {
-                SetField(ref _queryTagCounter, value, nameof(QueryTagCounter));
-            }
+            get { return _queryTag.Count(x => x.Equals(';')); }
         }
         public string FirstLinkInput
         {
@@ -152,7 +147,7 @@ namespace GeneralConfigSetter.ViewModels
 
         private void ExtractLinkData()
         {
-            Context.QueryText = Services.ConfigUpdateService.CreateQueryTags(QueryTag);
+            Context.QueryText = Services.ConfigUpdateService.CreateAttachmentQueryBit(QueryTag);
             Services.LinkService.GetSourceAndTargetData(Context, FirstLinkInput, SecondLinkInput);
             UpdateUiProperties();
         }
