@@ -1,4 +1,6 @@
-﻿using System.Windows.Controls;
+﻿using System.Linq;
+using System.Windows;
+using System.Windows.Controls;
 using GeneralConfigSetter.Models;
 using GeneralConfigSetter.ViewModels;
 using WpfFramework.Core;
@@ -20,5 +22,12 @@ namespace GeneralConfigSetter.Views.Pages
         }
         public RelayCommandGeneric<NotificationModel, bool> ShowMessageCommand { get { return _testItemsViewModel.ShowMessageCommand; } internal set { _testItemsViewModel.ShowMessageCommand = value; } }
 
+        private void QueryTagTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (e.Changes.First().AddedLength > 1)
+            {
+                QueryTagTextBox.CaretIndex = QueryTagTextBox.Text.Length;
+            }
+        }
     }
 }

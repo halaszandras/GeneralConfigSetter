@@ -51,7 +51,8 @@
                                  Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                  Text="{Binding QueryTag, UpdateSourceTrigger=PropertyChanged}"
                                  VerticalAlignment="Center"
-                                 TextWrapping="Wrap" />
+                                 TextWrapping="Wrap"
+                                 TextChanged="QueryTagTextBox_TextChanged" />
                         <TextBlock Grid.Column="2"
                                    Margin="8"
                                    Text="{Binding QueryTagCounter, UpdateSourceTrigger=PropertyChanged}" />
