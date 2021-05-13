@@ -34,21 +34,24 @@
 
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
                         <TextBox Grid.Column="0"
                                  Margin="18 8"
-                                  materialDesign:HintAssist.Hint="Query tag"
-                                  Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                                  Text="{Binding QueryTag, UpdateSourceTrigger=PropertyChanged}"
-                                  VerticalAlignment="Center"
-                                  TextWrapping="Wrap" />
+                                 x:Name="QueryTagTextBox"
+                                 materialDesign:HintAssist.Hint="Query tag"
+                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                 Text="{Binding QueryTag, UpdateSourceTrigger=PropertyChanged}"
+                                 VerticalAlignment="Center"
+                                 TextWrapping="Wrap"
+                                 TextChanged="QueryTagTextBox_TextChanged" />
                         <TextBlock Grid.Column="1"
-                                   Margin="8"
-                                   Text="{Binding QueryTagCounter, UpdateSourceTrigger=PropertyChanged}"/>
+                                   Margin="16"
+                                   VerticalAlignment="Top"
+                                   Text="{Binding QueryTagCounter, UpdateSourceTrigger=PropertyChanged}" />
                     </Grid>
-                    
+
                     <TextBox  Margin="18 8"
                               materialDesign:HintAssist.Hint="Source link"
                               Style="{StaticResource MaterialDesignFloatingHintTextBox}"

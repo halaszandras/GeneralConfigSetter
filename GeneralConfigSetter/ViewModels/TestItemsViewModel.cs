@@ -93,17 +93,31 @@ namespace GeneralConfigSetter.ViewModels
 
         private void UpdateUiProperties()
         {
-            QueryText = Context.QueryText;
-            TestPlanNamesText = Context.TestPlanNamesText;
+            QueryText = IsTestCaseProcessorEnabled ? Context.QueryText : "Disabled";
+            TestVariablesText = IsTestVariablesProcessorEnabled ? "Enabled" : "Disabled";
+            TestConfigurationsText = IsTestConfigurationsProcessorEnabled ? "Enabled" : "Disabled";
+            TestPlanNamesText = IsTestPlansAndSuitesProcessorEnabled ? Context.TestPlanNamesText : "Disabled";
         }
 
         private string _queryText = "";
+        private string _testVariablesText = "";
+        private string _testConfigurationsText = "";
         private string _testPlanNamesText = "";
 
         public string QueryText
         {
             get { return _queryText; }
             set { SetField(ref _queryText, value, nameof(QueryText)); }
+        }
+        public string TestVariablesText
+        {
+            get { return _testVariablesText; }
+            set { SetField(ref _testVariablesText, value, nameof(TestVariablesText)); }
+        }
+        public string TestConfigurationsText
+        {
+            get { return _testConfigurationsText; }
+            set { SetField(ref _testConfigurationsText, value, nameof(TestConfigurationsText)); }
         }
         public string TestPlanNamesText
         {
@@ -155,7 +169,8 @@ namespace GeneralConfigSetter.ViewModels
 
         private void ExtractData()
         {
-            //Context.QueryText = Services.ConfigUpdateService.CreateAttachmentQueryBit(QueryTag);
+            Context.QueryText = Services.ConfigUpdateService.CreateTestItemsQueryBit(QueryTag);
+            Context.TestPlanNamesText = Services.ConfigUpdateService.CreateTestPlansQueryBit(TestPlanName);
             UpdateUiProperties();
         }
 
@@ -179,7 +194,12 @@ namespace GeneralConfigSetter.ViewModels
                 //Get the path of specified file
                 string filePath = openFileDialog.FileName;
 
-                Services.ConfigUpdateService.UpdateAttachmentConfig(Context, filePath);
+                Services.ConfigUpdateService.UpdateTestItemsConfig(Context,
+                                                                   IsTestCaseProcessorEnabled,
+                                                                   IsTestVariablesProcessorEnabled,
+                                                                   IsTestConfigurationsProcessorEnabled,
+                                                                   IsTestPlansAndSuitesProcessorEnabled,
+                                                                   filePath);
                 ShowMessageCommand.Execute(new NotificationModel("SUCCESS!!!!", NotificationType.Information));
             }
             else

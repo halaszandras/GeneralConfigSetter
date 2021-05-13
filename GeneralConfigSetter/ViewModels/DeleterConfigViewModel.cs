@@ -1,4 +1,5 @@
-﻿using GeneralConfigSetter.Enums;
+﻿using System.Linq;
+using GeneralConfigSetter.Enums;
 using GeneralConfigSetter.Models;
 using Microsoft.Win32;
 using WpfFramework.Core;
@@ -14,7 +15,16 @@ namespace GeneralConfigSetter.ViewModels
         public string QueryTag
         {
             get { return _queryTag; }
-            set { SetField(ref _queryTag, value, nameof(QueryTag)); }
+            set
+            {
+                value = InsertSplitters(value);
+                SetField(ref _queryTag, value, nameof(QueryTag));
+                OnPropertyChanged(nameof(QueryTagCounter));
+            }
+        }
+        public int QueryTagCounter
+        {
+            get { return _queryTag.Count(x => x.Equals(';')); }
         }
         public string LinkInput
         {
@@ -76,9 +86,39 @@ namespace GeneralConfigSetter.ViewModels
             Context = context;
         }
 
+        private string InsertSplitters(string tagStrings)
+        {
+            tagStrings = tagStrings.Replace(" ", "");
+            tagStrings = CheckSplitters(tagStrings);
+
+            if (tagStrings.Length == 1 && tagStrings[tagStrings.Length - 1] == ';')
+            {
+                tagStrings = "";
+            }
+
+            if (tagStrings.Length >= 1)
+            {
+                if (tagStrings[tagStrings.Length - 1] != ';')
+                {
+                    tagStrings += ';';
+                }
+            }
+
+            return tagStrings;
+        }
+
+        private string CheckSplitters(string tagStrings)
+        {
+            while (tagStrings.Contains(";;"))
+            {
+                tagStrings = tagStrings.Replace(";;", ";");
+            }
+            return tagStrings;
+        }
+
         private void ExtractLinkData()
         {
-            Context.QueryText = $"AND [System.Tags] contains '{QueryTag}' AND [System.WorkItemType] NOT IN ('Test Suite', 'Test Plan', 'Test Case')";
+            Context.QueryText = Services.ConfigUpdateService.CreateDeleterQueryBit(QueryTag);
             Services.LinkService.GetTargetData(Context, LinkInput);
             UpdateUiProperties();
         }

@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using System.Windows;
 using System.Windows.Controls;
 using GeneralConfigSetter.Models;
 using GeneralConfigSetter.ViewModels;
@@ -27,6 +26,14 @@ namespace GeneralConfigSetter.Views.Pages
             if (e.Changes.First().AddedLength > 1)
             {
                 QueryTagTextBox.CaretIndex = QueryTagTextBox.Text.Length;
+            }
+        }
+
+        private void TestPlanNamesTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (e.Changes.First().AddedLength > 1)
+            {
+                TestPlanNamesTextBox.CaretIndex = TestPlanNamesTextBox.Text.Length;
             }
         }
     }

@@ -33,6 +33,26 @@ namespace GeneralConfigSetter.Services
             File.WriteAllText(generalConfigFilePath, result);
         }
 
+        public static void UpdateTestItemsConfig(IContext context,
+                                                 bool isTestItemsProcessorEnabled,
+                                                 bool isTestVariablesEnabled,
+                                                 bool isTestConfigurationsEnabled,
+                                                 bool isTestPlansAndSuitesProcessorEnabled,
+                                                 string testItemsConfigFilePath)
+        {
+            //These are just to show you where to get the data from.
+            var QueryText = context.QueryText;
+            var TestPlanNamesText = context.TestPlanNamesText;
+
+            dynamic json = JsonConvert.DeserializeObject(File.ReadAllText(testItemsConfigFilePath));
+
+            //MODIFICATION PART HERE
+
+            string result = JsonConvert.SerializeObject(json, Formatting.Indented);
+
+            File.WriteAllText(testItemsConfigFilePath, result);
+        }
+
         public static void UpdateDeleterConfig(IContext context, string deleterConfigFilePath)
         {
             UpdateMigrationInbox(context, deleterConfigFilePath);
@@ -252,6 +272,71 @@ namespace GeneralConfigSetter.Services
             }
             return "AND NOT [System.Tags] contains 'TRANSFERRED_ATTACHMENTS_MIGRATED' " +
                     "AND NOT [System.Tags] contains 'TRANSFERRED_ATTACHMENTS_PROCESSED' " + result;
+        }
+
+        public static string CreateTestItemsQueryBit(string rawTags)
+        {
+            List<string> tags = new(rawTags.Split(';'));
+            tags.RemoveAt(tags.Count - 1);
+            string result = "";
+            if (tags.Count >= 2)
+            {
+                List<string> tagSentences = new List<string>();
+                result = "AND (";
+                foreach (string tag in tags)
+                {
+                    tagSentences.Add($"[System.Tags] contains '{tag}'");
+                }
+                result += string.Join(" OR ", tagSentences) + ")";
+            }
+            else if (tags.Count == 1)
+            {
+                result = $"AND [System.Tags] contains '{rawTags.Trim(';')}'";
+            }
+            return result;
+        }
+
+        public static string CreateTestPlansQueryBit(string rawNameQueue)
+        {
+            List<string> tags = new(rawNameQueue.Split(';'));
+            tags.RemoveAt(tags.Count - 1);
+            string result = "";
+            if (tags.Count >= 2)
+            {
+                List<string> tagSentences = new List<string>();
+                foreach (string tag in tags)
+                {
+                    tagSentences.Add($"PlanName='{tag}'");
+                }
+                result += string.Join(" OR ", tagSentences);
+            }
+            else if (tags.Count == 1)
+            {
+                result = $"PlanName='{rawNameQueue.Trim(';')}'";
+            }
+            return result;
+        }
+
+        public static string CreateDeleterQueryBit(string rawTags)
+        {
+            List<string> tags = new(rawTags.Split(';'));
+            tags.RemoveAt(tags.Count - 1);
+            string result = "";
+            if (tags.Count >= 2)
+            {
+                List<string> tagSentences = new List<string>();
+                result = "AND (";
+                foreach (string tag in tags)
+                {
+                    tagSentences.Add($"[System.Tags] contains '{tag}'");
+                }
+                result += string.Join(" OR ", tagSentences) + ")";
+            }
+            else if (tags.Count == 1)
+            {
+                result = $"AND [System.Tags] contains '{rawTags.Trim(';')}'";
+            }
+            return "AND [System.WorkItemType] NOT IN ('Test Suite', 'Test Plan', 'Test Case') " + result;
         }
 
         public static string ValidateInput(string input)

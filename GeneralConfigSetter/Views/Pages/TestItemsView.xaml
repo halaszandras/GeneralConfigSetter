@@ -39,9 +39,9 @@
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
                         <CheckBox Grid.Column="0"
-                                  Margin="8"
+                                  Margin="16"
                                   HorizontalAlignment="Center"
-                                  VerticalAlignment="Center"
+                                  VerticalAlignment="Top"
                                   IsChecked="{Binding IsTestCaseProcessorEnabled}"
                                   ToolTip="IsEnabled"/>
                         <TextBox Grid.Column="1"
@@ -54,7 +54,8 @@
                                  TextWrapping="Wrap"
                                  TextChanged="QueryTagTextBox_TextChanged" />
                         <TextBlock Grid.Column="2"
-                                   Margin="8"
+                                   Margin="16"
+                                   VerticalAlignment="Top"
                                    Text="{Binding QueryTagCounter, UpdateSourceTrigger=PropertyChanged}" />
                     </Grid>
 
@@ -64,9 +65,9 @@
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
                         <CheckBox Grid.Column="0"
-                                  Margin="8"
+                                  Margin="16"
                                   HorizontalAlignment="Center"
-                                  VerticalAlignment="Center"
+                                  VerticalAlignment="Top"
                                   IsChecked="{Binding IsTestVariablesProcessorEnabled}"
                                   ToolTip="IsEnabled" />
                         <TextBox Grid.Column="1"
@@ -84,9 +85,9 @@
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
                         <CheckBox Grid.Column="0"
-                                  Margin="8"
+                                  Margin="16"
                                   HorizontalAlignment="Center"
-                                  VerticalAlignment="Center"
+                                  VerticalAlignment="Top"
                                   IsChecked="{Binding IsTestConfigurationsProcessorEnabled}"
                                   ToolTip="IsEnabled" />
                         <TextBox Grid.Column="1"
@@ -105,27 +106,30 @@
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
                         <CheckBox Grid.Column="0"
-                                  Margin="8"
+                                  Margin="16"
                                   HorizontalAlignment="Center"
-                                  VerticalAlignment="Center"
+                                  VerticalAlignment="Top"
                                   IsChecked="{Binding IsTestPlansAndSuitesProcessorEnabled}"
                                   ToolTip="IsEnabled" />
                         <TextBox Grid.Column="1"
                                  Margin="18 8"
                                  materialDesign:HintAssist.Hint="TestPlan Name"
+                                 x:Name="TestPlanNamesTextBox"
                                  Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                  Text="{Binding TestPlanName, UpdateSourceTrigger=PropertyChanged}"
                                  VerticalAlignment="Center"
-                                 TextWrapping="Wrap" />
+                                 TextWrapping="Wrap"
+                                 TextChanged="TestPlanNamesTextBox_TextChanged" />
                         <TextBlock Grid.Column="2"
-                                   Margin="8"
+                                   Margin="16"
+                                   VerticalAlignment="Top"
                                    Text="{Binding TestPlanNameCounter, UpdateSourceTrigger=PropertyChanged}" />
                     </Grid>
 
                     <Button Margin="16"
                             HorizontalAlignment="Center"
                             Content="Evaluate"
-                            Command="{Binding ExtractLinkDataCommand}" />
+                            Command="{Binding ExtractDataCommand}" />
                 </StackPanel>
             </materialDesign:Card>
 
@@ -152,7 +156,7 @@
                     <TextBlock Grid.Column="0"
                                Grid.Row="0"
                                Margin="6"
-                               Text="Query: " />
+                               Text="QueryBit: " />
                     <TextBlock Grid.Column="1"
                                Grid.Row="0"
                                Margin="6"
@@ -163,61 +167,31 @@
                     <TextBlock Grid.Column="0"
                                Grid.Row="1"
                                Margin="6"
-                               Text="SourceServerName: " />
+                               Text="TestVariables: " />
                     <TextBlock Grid.Column="1"
                                Grid.Row="1"
                                Margin="6"
-                               Text="{Binding SourceServerName}"
+                               Text="{Binding TestVariablesText}"
                                FontStyle="Italic" />
 
                     <TextBlock Grid.Column="0"
                                Grid.Row="2"
                                Margin="6"
-                               Text="SourceCollectionUrl: " />
+                               Text="TestConfigurations: " />
                     <TextBlock Grid.Column="1"
                                Grid.Row="2"
                                Margin="6"
-                               Text="{Binding SourceCollectionUrl}"
+                               Text="{Binding TestConfigurationsText}"
                                FontStyle="Italic" />
 
                     <TextBlock Grid.Column="0"
                                Grid.Row="3"
                                Margin="6"
-                               Text="SourceProjectName: " />
+                               Text="TestPlans and Suites: " />
                     <TextBlock Grid.Column="1"
                                Grid.Row="3"
                                Margin="6"
-                               Text="{Binding SourceProjectName}"
-                               FontStyle="Italic" />
-
-                    <TextBlock Grid.Column="0"
-                               Grid.Row="4"
-                               Margin="6"
-                               Text="TargetServerName: " />
-                    <TextBlock Grid.Column="1"
-                               Grid.Row="4"
-                               Margin="6"
-                               Text="{Binding TargetServerName}"
-                               FontStyle="Italic" />
-
-                    <TextBlock Grid.Column="0"
-                               Grid.Row="5"
-                               Margin="6"
-                               Text="TargetCollectionUrl: " />
-                    <TextBlock Grid.Column="1"
-                               Grid.Row="5"
-                               Margin="6"
-                               Text="{Binding TargetCollectionUrl}"
-                               FontStyle="Italic" />
-
-                    <TextBlock Grid.Column="0"
-                               Grid.Row="6"
-                               Margin="6"
-                               Text="TargetProjectName: " />
-                    <TextBlock Grid.Column="1"
-                               Grid.Row="6"
-                               Margin="6"
-                               Text="{Binding TargetProjectName}"
+                               Text="{Binding TestPlanNamesText}"
                                FontStyle="Italic" />
 
                     <Button Grid.Column="0"
