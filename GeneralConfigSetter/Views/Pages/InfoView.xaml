@@ -19,6 +19,9 @@
 
     <ScrollViewer VerticalScrollBarVisibility="Auto">
         <Grid Name="_infoGrid">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
             <materialDesign:Card Grid.Row="0"
                                  Margin="16">
                 <StackPanel>
@@ -29,7 +32,7 @@
                                    Style="{StaticResource MaterialDesignHeadline4TextBlock}" />
                     </materialDesign:ColorZone>
 
-                    <Grid Margin="12">
+                    <Grid Margin="24">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="auto" />
                             <ColumnDefinition Width="*" />
@@ -70,52 +73,50 @@
                         <TextBlock Grid.Column="0"
                                    Grid.Row="2"
                                    Margin="6"
-                                   Text="Next: " />
+                                   Text="Authors: " />
                         <TextBlock Grid.Column="1"
                                    Grid.Row="2"
                                    Margin="6"
-                                   Text="{Binding }"
+                                   Text="{Binding Authors}"
                                    FontStyle="Italic" />
 
                         <TextBlock Grid.Column="0"
                                    Grid.Row="3"
                                    Margin="6"
-                                   Text="Next: " />
+                                   Text="CopyRight: " />
                         <TextBlock Grid.Column="1"
                                    Grid.Row="3"
                                    Margin="6"
-                                   Text="{Binding }"
+                                   Text="{Binding CopyRight}"
                                    FontStyle="Italic" />
 
                         <TextBlock Grid.Column="0"
                                    Grid.Row="4"
                                    Margin="6"
-                                   Text="Next: " />
+                                   Text="Company Name: " />
                         <TextBlock Grid.Column="1"
                                    Grid.Row="4"
                                    Margin="6"
-                                   Text="{Binding }"
+                                   Text="{Binding CompanyName}"
                                    FontStyle="Italic" />
 
                         <TextBlock Grid.Column="0"
                                    Grid.Row="5"
                                    Margin="6"
-                                   Text="Next: " />
+                                   Text="Location: " />
                         <TextBlock Grid.Column="1"
                                    Grid.Row="5"
                                    Margin="6"
-                                   Text="{Binding }"
+                                   Text="{Binding Location}"
+                                   TextWrapping="Wrap"
                                    FontStyle="Italic" />
-
-                        <TextBlock Grid.Column="0"
-                                   Grid.Row="6"
-                                   Margin="6"
-                                   Text="Next: " />
-                        <TextBlock Grid.Column="1"
-                                   Grid.Row="6"
-                                   Margin="6"
-                                   Text="{Binding }"
-                                   FontStyle="Italic" />
+                        <Button Grid.Column="0"
+                                Grid.ColumnSpan="2"
+                                Grid.Row="6"
+                                Margin="16"
+                                HorizontalAlignment="Center"
+                                Content="Copy Path To Clipboard"
+                                Command="{Binding CopyLocationToClipBoardCommand}"/>
                     </Grid>
                 </StackPanel>
             </materialDesign:Card>

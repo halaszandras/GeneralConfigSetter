@@ -81,6 +81,7 @@ namespace GeneralConfigSetter.ViewModels
             _repositoryConfigView.ShowMessageCommand = ShowMessageCommand;
             _bugFamilyView.ShowMessageCommand = ShowMessageCommand;
             _testItemsView.ShowMessageCommand = ShowMessageCommand;
+            _infoView.ShowMessageCommand = ShowMessageCommand;
 
             CheckPatFreshness(DataAccessService.GetPatConfigFilePath());
         }

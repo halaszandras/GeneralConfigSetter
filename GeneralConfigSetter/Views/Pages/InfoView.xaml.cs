@@ -17,5 +17,7 @@ namespace GeneralConfigSetter.Views.Pages
             _infoGrid.DataContext = infoViewModel;
             _infoViewModel = infoViewModel;
         }
+
+        public RelayCommandGeneric<NotificationModel, bool> ShowMessageCommand { get { return _infoViewModel.ShowMessageCommand; } internal set { _infoViewModel.ShowMessageCommand = value; } }
     }
 }

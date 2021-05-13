@@ -40,17 +40,13 @@ namespace GeneralConfigSetter.Services
                                                  bool isTestPlansAndSuitesProcessorEnabled,
                                                  string testItemsConfigFilePath)
         {
-            //These are just to show you where to get the data from.
-            var QueryText = context.QueryText;
-            var TestPlanNamesText = context.TestPlanNamesText;
-
             JObject json = JObject.Parse(File.ReadAllText(testItemsConfigFilePath));
 
             foreach (JToken token in json["Processors"])
             {
                 if (token.ToString().Contains("WorkItemMigrationConfig"))
                 {
-                    token["WIQLQueryBit"] = QueryText;
+                    token["WIQLQueryBit"] = context.QueryText; ;
                     token["Enabled"] = isTestItemsProcessorEnabled;
                 }
 
@@ -63,7 +59,7 @@ namespace GeneralConfigSetter.Services
                 else if (token.ToString().Contains("TestPlansAndSuitesMigrationConfig"))
                 {
                     token["Enabled"] = isTestPlansAndSuitesProcessorEnabled;
-                    token["TestPlanQueryBit"] = TestPlanNamesText;
+                    token["TestPlanQueryBit"] = context.TestPlanNamesText;
                 }
             }
 
