@@ -186,7 +186,7 @@ namespace GeneralConfigSetter.ViewModels
         private void UpdateTestItemsConfig()
         {
             OpenFileDialog openFileDialog = new();
-            openFileDialog.Filter = "XML config files (*.config)|*.config";
+            openFileDialog.Filter = "JSON files (*.json)|*.json"; // "XML config files (*.config)|*.config";
             var result = openFileDialog.ShowDialog();
 
             if (result != null && result == true)

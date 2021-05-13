@@ -44,9 +44,28 @@ namespace GeneralConfigSetter.Services
             var QueryText = context.QueryText;
             var TestPlanNamesText = context.TestPlanNamesText;
 
-            dynamic json = JsonConvert.DeserializeObject(File.ReadAllText(testItemsConfigFilePath));
+            JObject json = JObject.Parse(File.ReadAllText(testItemsConfigFilePath));
 
-            //MODIFICATION PART HERE
+            foreach (JToken token in json["Processors"])
+            {
+                if (token.ToString().Contains("WorkItemMigrationConfig"))
+                {
+                    token["WIQLQueryBit"] = QueryText;
+                    token["Enabled"] = isTestItemsProcessorEnabled;
+                }
+
+                else if (token.ToString().Contains("TestVariablesMigrationConfig"))
+                    token["Enabled"] = isTestVariablesEnabled;
+
+                else if (token.ToString().Contains("TestConfigurationsMigrationConfig"))
+                    token["Enabled"] = isTestConfigurationsEnabled;
+
+                else if (token.ToString().Contains("TestPlansAndSuitesMigrationConfig"))
+                {
+                    token["Enabled"] = isTestPlansAndSuitesProcessorEnabled;
+                    token["TestPlanQueryBit"] = TestPlanNamesText;
+                }
+            }
 
             string result = JsonConvert.SerializeObject(json, Formatting.Indented);
 
