@@ -26,25 +26,45 @@
         </Grid.RowDefinitions>
 
         <materialDesign:ColorZone Grid.Row="0"
-                                  Mode="PrimaryMid">
+                                  Mode="PrimaryMid"
+                                  Margin="24 0 0 0">
             <TextBlock Margin="6"
                        Style="{StaticResource MaterialDesignHeadline4TextBlock}"
                        Text="Pat Config"
                        HorizontalAlignment="Center" />
         </materialDesign:ColorZone>
 
-        <TextBox Grid.Row="1"
-                 Text="{Binding PatConfig, UpdateSourceTrigger=PropertyChanged}"
-                 Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                 VerticalAlignment="Stretch"
-                 AcceptsReturn="True"
-                 TextWrapping="Wrap"
-                 VerticalScrollBarVisibility="Auto" />
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0"
+                       Margin="0 17 8 0" Text="{Binding RowNumbers}"
+                       TextAlignment="Right"/>
+            <TextBox Grid.Column="1" Text="{Binding PatConfig, UpdateSourceTrigger=PropertyChanged}"
+                     Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                     VerticalAlignment="Stretch"
+                     AcceptsReturn="True"
+                     TextWrapping="Wrap"
+                     VerticalScrollBarVisibility="Auto">
+                <TextBox.InputBindings>
+                    <KeyBinding Key="S"
+                                Modifiers="Control"
+                                Command="{Binding UpdatePatConfigCommand}" />
+                </TextBox.InputBindings>
+            </TextBox>
+        </Grid>
+        
 
         <Button Grid.Row="2"
                 HorizontalAlignment="Center"
                 Margin="16"
-                Content="Update PAT Config"
-                Command="{Binding UpdatePatConfigCommand}" />
+                Command="{Binding UpdatePatConfigCommand}">
+            <StackPanel Orientation="Horizontal">
+                <materialDesign:PackIcon Kind="ContentSave" />
+                <TextBlock Text="Save (Ctrl+S)"/>
+            </StackPanel>
+        </Button>
     </Grid>
 </Page>

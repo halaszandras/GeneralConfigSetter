@@ -70,6 +70,9 @@
             </MenuItem>
             <MenuItem Header="_Tweaks"
                       Icon="{materialDesign:PackIcon Kind=Screwdriver}">
+                <MenuItem Header="_Field Mapper"
+                          Icon="{materialDesign:PackIcon Kind=CompassRose}"
+                          Command="{Binding LoadFieldMapperViewCommand}" />
                 <MenuItem Header="_Locking"
                           Icon="{materialDesign:PackIcon Kind=Lock}"
                           Command="{Binding LockWorkItemsCommand}"/>

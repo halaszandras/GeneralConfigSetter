@@ -36,18 +36,22 @@
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
                         <TextBox Grid.Column="0"
+                                 x:Name="QueryTagTextBox"
                                  Margin="18 8"
                                  materialDesign:HintAssist.Hint="Query tag"
                                  Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                  Text="{Binding QueryTag, UpdateSourceTrigger=PropertyChanged}"
                                  VerticalAlignment="Center"
-                                 TextWrapping="Wrap" />
-                        <TextBlock Grid.Column="1"
-                                   Margin="8"
-                                   Text="{Binding QueryTagCounter, UpdateSourceTrigger=PropertyChanged}" />
+                                 HorizontalAlignment="Stretch"
+                                 TextWrapping="Wrap"
+                                 TextChanged="QueryTagTextBox_TextChanged" />
+                        <materialDesign:Badged Grid.Column="1"
+                                               Badge="{Binding QueryTagCounter, UpdateSourceTrigger=PropertyChanged}"
+                                               Margin="18 18"
+                                               HorizontalAlignment="Stretch"/>
                     </Grid>
 
                     <TextBox  Margin="18 8"

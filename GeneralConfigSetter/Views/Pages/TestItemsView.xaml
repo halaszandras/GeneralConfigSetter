@@ -45,18 +45,19 @@
                                   IsChecked="{Binding IsTestCaseProcessorEnabled}"
                                   ToolTip="IsEnabled"/>
                         <TextBox Grid.Column="1"
-                                 Margin="18 8"
                                  x:Name="QueryTagTextBox"
+                                 Margin="18 8"
                                  materialDesign:HintAssist.Hint="Query tag"
                                  Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                  Text="{Binding QueryTag, UpdateSourceTrigger=PropertyChanged}"
                                  VerticalAlignment="Center"
+                                 HorizontalAlignment="Stretch"
                                  TextWrapping="Wrap"
                                  TextChanged="QueryTagTextBox_TextChanged" />
-                        <TextBlock Grid.Column="2"
-                                   Margin="16"
-                                   VerticalAlignment="Top"
-                                   Text="{Binding QueryTagCounter, UpdateSourceTrigger=PropertyChanged}" />
+                        <materialDesign:Badged Grid.Column="2"
+                                               Badge="{Binding QueryTagCounter, UpdateSourceTrigger=PropertyChanged}"
+                                               Margin="18 18"
+                                               HorizontalAlignment="Stretch" />
                     </Grid>
 
                     <Grid>
@@ -112,18 +113,19 @@
                                   IsChecked="{Binding IsTestPlansAndSuitesProcessorEnabled}"
                                   ToolTip="IsEnabled" />
                         <TextBox Grid.Column="1"
-                                 Margin="18 8"
-                                 materialDesign:HintAssist.Hint="TestPlan Name"
                                  x:Name="TestPlanNamesTextBox"
+                                 Margin="18 8"
+                                 materialDesign:HintAssist.Hint="Query tag"
                                  Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                  Text="{Binding TestPlanName, UpdateSourceTrigger=PropertyChanged}"
                                  VerticalAlignment="Center"
+                                 HorizontalAlignment="Stretch"
                                  TextWrapping="Wrap"
                                  TextChanged="TestPlanNamesTextBox_TextChanged" />
-                        <TextBlock Grid.Column="2"
-                                   Margin="16"
-                                   VerticalAlignment="Top"
-                                   Text="{Binding TestPlanNameCounter, UpdateSourceTrigger=PropertyChanged}" />
+                        <materialDesign:Badged Grid.Column="2"
+                                               Badge="{Binding TestPlanNameCounter, UpdateSourceTrigger=PropertyChanged}"
+                                               Margin="18 18"
+                                               HorizontalAlignment="Stretch"/>
                     </Grid>
 
                     <Button Margin="16"

@@ -21,6 +21,7 @@ namespace GeneralConfigSetter.ViewModels
         private readonly BugFamilyView _bugFamilyView;
         private readonly InfoView _infoView;
         private readonly TestItemsView _testItemsView;
+        private readonly FieldMapperView _fieldMapperView;
 
         public NavigationService NavigationService { get; }
         public RelayCommand LoadConfigUpdateViewCommand { get; set; }
@@ -31,6 +32,7 @@ namespace GeneralConfigSetter.ViewModels
         public RelayCommand LoadBugFamilyViewCommand { get; set; }
         public RelayCommand LoadInfoViewCommand { get; set; }
         public RelayCommand LoadTestItemsViewCommand { get; set; }
+        public RelayCommand LoadFieldMapperViewCommand { get; set; }
         public RelayCommand LockWorkItemsCommand { get; set; }
         public RelayCommandGeneric<NotificationModel, bool> ShowMessageCommand { get; set; }
         public IContext Context { get; set; }
@@ -45,6 +47,7 @@ namespace GeneralConfigSetter.ViewModels
                                    BugFamilyView bugFamilyView,
                                    InfoView infoView,
                                    TestItemsView testItemsView,
+                                   FieldMapperView fieldMapperView,
                                    IContext context,
                                    NotificationViewModel notificationViewModel)
         {
@@ -57,6 +60,7 @@ namespace GeneralConfigSetter.ViewModels
             _bugFamilyView = bugFamilyView;
             _infoView = infoView;
             _testItemsView = testItemsView;
+            _fieldMapperView = fieldMapperView;
             _configUpdateView = configUpdateView;
             Context = context;
             Context.InitializePats();
@@ -71,6 +75,7 @@ namespace GeneralConfigSetter.ViewModels
             LoadBugFamilyViewCommand = new RelayCommand(LoadBugFamilyView, IsBugFamilyViewEnabled);
             LoadInfoViewCommand = new RelayCommand(LoadInfoView, IsInfoViewEnabled);
             LoadTestItemsViewCommand = new RelayCommand(LoadTestItemsView, IsTestItemsViewEnabled);
+            LoadFieldMapperViewCommand = new RelayCommand(LoadFieldMapperView, IsFieldMapperViewEnabled);
             ShowMessageCommand = new RelayCommandGeneric<NotificationModel, bool>(NotificationViewModel.ShowMessage, NotificationViewModel.IsShowMessageEnabled);
             LockWorkItemsCommand = new RelayCommand(LockWorkItems, IsLockWorkItemsEnabled);
 
@@ -82,6 +87,7 @@ namespace GeneralConfigSetter.ViewModels
             _bugFamilyView.ShowMessageCommand = ShowMessageCommand;
             _testItemsView.ShowMessageCommand = ShowMessageCommand;
             _infoView.ShowMessageCommand = ShowMessageCommand;
+            _fieldMapperView.ShowMessageCommand = ShowMessageCommand;
 
             CheckPatFreshness(DataAccessService.GetPatConfigFilePath());
         }
@@ -204,6 +210,16 @@ namespace GeneralConfigSetter.ViewModels
         private bool IsLockWorkItemsEnabled()
         {
             return true;
+        }
+
+        private void LoadFieldMapperView()
+        {
+            NavigationService.NavigateTo(_fieldMapperView);
+        }
+
+        private bool IsFieldMapperViewEnabled()
+        {
+            return !NavigationService.IsActiveContent(_fieldMapperView);
         }
     }
 }

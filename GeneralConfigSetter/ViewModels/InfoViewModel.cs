@@ -1,4 +1,6 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Diagnostics;
+using System.Reflection;
 using System.Windows;
 using GeneralConfigSetter.Enums;
 using GeneralConfigSetter.Models;
@@ -101,7 +103,16 @@ namespace GeneralConfigSetter.ViewModels
 
         private bool IsCopyLocationToClipBoardEnabled()
         {
-            return !Clipboard.GetText().Equals(Location);
+            var result = false;
+            try
+            {
+                result = !Clipboard.GetText().Equals(Location);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e);
+            }
+            return result;
         }
     }
 }
