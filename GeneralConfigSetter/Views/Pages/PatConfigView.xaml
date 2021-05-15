@@ -27,44 +27,57 @@
 
         <materialDesign:ColorZone Grid.Row="0"
                                   Mode="PrimaryMid"
-                                  Margin="24 0 0 0">
+                                  Margin="48 0 0 0">
             <TextBlock Margin="6"
                        Style="{StaticResource MaterialDesignHeadline4TextBlock}"
                        Text="Pat Config"
                        HorizontalAlignment="Center" />
         </materialDesign:ColorZone>
 
-        <Grid Grid.Row="1">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <TextBlock Grid.Column="0"
-                       Margin="0 17 8 0" Text="{Binding RowNumbers}"
-                       TextAlignment="Right"/>
-            <TextBox Grid.Column="1" Text="{Binding PatConfig, UpdateSourceTrigger=PropertyChanged}"
-                     Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                     VerticalAlignment="Stretch"
-                     AcceptsReturn="True"
-                     TextWrapping="Wrap"
-                     VerticalScrollBarVisibility="Auto">
-                <TextBox.InputBindings>
-                    <KeyBinding Key="S"
-                                Modifiers="Control"
-                                Command="{Binding UpdatePatConfigCommand}" />
-                </TextBox.InputBindings>
-            </TextBox>
-        </Grid>
-        
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="10*" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0"
+                           Margin="0 19 18 0"
+                           Text="{Binding RowNumbers}"
+                           TextAlignment="Right" />
+                <TextBox Grid.Column="1"
+                         Text="{Binding PatConfig, UpdateSourceTrigger=PropertyChanged}"
+                         Style="{StaticResource MaterialDesignFilledTextBox}"
+                         VerticalAlignment="Stretch"
+                         AcceptsReturn="True"
+                         TextWrapping="Wrap"
+                         BorderThickness="0">
+                    <TextBox.InputBindings>
+                        <KeyBinding Key="S"
+                                    Modifiers="Control"
+                                    Command="{Binding UpdatePatConfigCommand}" />
+                    </TextBox.InputBindings>
+                </TextBox>
+            </Grid>
+        </ScrollViewer>
 
-        <Button Grid.Row="2"
-                HorizontalAlignment="Center"
-                Margin="16"
-                Command="{Binding UpdatePatConfigCommand}">
-            <StackPanel Orientation="Horizontal">
-                <materialDesign:PackIcon Kind="ContentSave" />
-                <TextBlock Text="Save (Ctrl+S)"/>
-            </StackPanel>
-        </Button>
+        <StackPanel Grid.Row="2"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Center">
+            <Button Margin="16"
+                    Command="{Binding ErrorCheckCommand}">
+                <StackPanel Orientation="Horizontal">
+                    <materialDesign:PackIcon Kind="FileCheck" />
+                    <TextBlock Text="Error Check" />
+                </StackPanel>
+            </Button>
+            <Button Margin="16"
+                    Command="{Binding UpdatePatConfigCommand}">
+                <StackPanel Orientation="Horizontal">
+                    <materialDesign:PackIcon Kind="ContentSave" />
+                    <TextBlock Text="Save (Ctrl+S)" />
+                </StackPanel>
+            </Button>
+        </StackPanel>
+
     </Grid>
 </Page>
