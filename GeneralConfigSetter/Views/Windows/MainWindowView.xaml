@@ -14,7 +14,7 @@
                       Background="{DynamicResource MaterialDesignPaper}"
                       FontFamily="{DynamicResource MaterialDesignFont}"
                       mc:Ignorable="d"
-                      Title="General Config Updater"
+                      Title="General Config Setter"
                       Icon="pack://application:,,,/Resources/ninjaCat.png"
                       Height="725"
                       Width="580"

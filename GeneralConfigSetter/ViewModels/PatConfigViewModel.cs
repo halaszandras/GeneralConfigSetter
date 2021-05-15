@@ -105,11 +105,11 @@ namespace GeneralConfigSetter.ViewModels
                 {
                     try
                     {
-                        check = !currentRow.Last().Equals(':');
+                        check = currentRow.Last().Equals(':');
                     }
                     catch (Exception e) { Debug.WriteLine(e); }
 
-                    if (check)
+                    if (!check)
                     {
                         IsPatConfigUpdateEnabled = false;
                         stringBuilder.Append("ERR");
@@ -138,7 +138,7 @@ namespace GeneralConfigSetter.ViewModels
                     {
                         IsPatConfigUpdateEnabled = false;
                         stringBuilder.Append("ERR");
-                        MessageBox.Show($"Row {index + 1} should contain a 52 char long PAT.", "Pat Text", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                        MessageBox.Show($"Row {index + 1} should contain a 52 character long PAT.", "Pat Text", MessageBoxButton.OK, MessageBoxImage.Exclamation);
                         break;
                     }
                     else if (!characterWhiteList.IsMatch(regexInput))
@@ -161,10 +161,10 @@ namespace GeneralConfigSetter.ViewModels
                 {
                     try
                     {
-                        check = !currentRow.Equals(string.Empty);
+                        check = currentRow.Equals(string.Empty);
                     }
                     catch (Exception e) { Debug.WriteLine(e); }
-                    if (check)
+                    if (!check)
                     {
                         IsPatConfigUpdateEnabled = false;
                         stringBuilder.Append("ERR");

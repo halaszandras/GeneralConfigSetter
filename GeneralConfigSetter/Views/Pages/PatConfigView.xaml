@@ -24,17 +24,21 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="10*" />
+        </Grid.ColumnDefinitions>
 
         <materialDesign:ColorZone Grid.Row="0"
-                                  Mode="PrimaryMid"
-                                  Margin="48 0 0 0">
+                                  Grid.Column="1"
+                                  Mode="PrimaryMid">
             <TextBlock Margin="6"
                        Style="{StaticResource MaterialDesignHeadline4TextBlock}"
                        Text="Pat Config"
                        HorizontalAlignment="Center" />
         </materialDesign:ColorZone>
 
-        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+        <ScrollViewer Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" VerticalScrollBarVisibility="Auto">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
@@ -50,6 +54,7 @@
                          VerticalAlignment="Stretch"
                          AcceptsReturn="True"
                          TextWrapping="Wrap"
+                         ToolTip="Servername:[enter]alphanumericalx52[enter]"
                          BorderThickness="0">
                     <TextBox.InputBindings>
                         <KeyBinding Key="S"
@@ -61,6 +66,8 @@
         </ScrollViewer>
 
         <StackPanel Grid.Row="2"
+                    Grid.Column="0"
+                    Grid.ColumnSpan="2"
                     Orientation="Horizontal"
                     HorizontalAlignment="Center">
             <Button Margin="16"
